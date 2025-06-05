@@ -8,12 +8,19 @@
 		<version>3.2.2</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.example</groupId>
+	<groupId>com.mysbproject</groupId>
 	<artifactId>core</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>core</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Service layer of Demo project for Spring Boot</description>
 	<dependencies>
+
+<!--		<dependency>-->
+<!--			<groupId>com.mysbproject</groupId>-->
+<!--			<artifactId>dao</artifactId>-->
+<!--			<version>${project.version}</version>-->
+<!--		</dependency>-->
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot</artifactId>

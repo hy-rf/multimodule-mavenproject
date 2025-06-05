@@ -1,7 +1,8 @@
-package com.example.multimodule.service;
+package com.mysbproject.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.mysbproject.service.MyService;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
