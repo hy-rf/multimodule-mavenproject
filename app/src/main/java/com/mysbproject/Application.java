@@ -1,6 +1,7 @@
 package com.mysbproject;
 
 import com.mysbproject.service.MyService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,11 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class Application {
 
-    private final MyService myService;
-
-    public Application(MyService myService) {
-        this.myService = myService;
-    }
+    @Autowired
+    MyService myService;
 
     @GetMapping("/")
     public String home() {
