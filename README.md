@@ -6,7 +6,7 @@
 ./mvnw clean install 
 ```
 
-app-version.jar is now had been created under app/target, now run
+app-version.jar had been created under app/target, run
 ```shell
 java -jar app/target/app-version.jar
 ```
