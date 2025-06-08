@@ -9,12 +9,10 @@ import org.springframework.stereotype.Service;
 @EnableConfigurationProperties(ServiceProperties.class)
 public class MyService {
 
-
     @Autowired
     GetDatabase getDatabase;
 
     private final ServiceProperties serviceProperties;
-
 
     public MyService(ServiceProperties serviceProperties) {
         this.serviceProperties = serviceProperties;

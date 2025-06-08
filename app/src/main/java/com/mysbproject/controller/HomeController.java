@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HomeController {
 
-     @Autowired
-     MyService myService;
+    @Autowired
+    MyService myService;
 
-     @GetMapping("/")
-     public String home() {
-         return myService.message();
-     }
+    @GetMapping("/")
+    public String home() {
+        return myService.message();
+    }
 }
