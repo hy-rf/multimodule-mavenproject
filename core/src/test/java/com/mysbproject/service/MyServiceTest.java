@@ -8,7 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest("service.message=Hello")
+@SpringBootTest(properties = {
+        "spring.datasource.url=jdbc:mysql://localhost:3306/mmdb",
+        "spring.datasource.username=mmdbuser",
+        "spring.datasource.password=00000000",
+        "spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver"
+})
 public class MyServiceTest {
 
     @Autowired

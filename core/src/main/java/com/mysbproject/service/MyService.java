@@ -20,6 +20,7 @@ public class MyService {
 
     public String message() {
         getDatabase.getDriver();
+        getDatabase.printTableNames();
         return this.serviceProperties.getMessage();
     }
 }
