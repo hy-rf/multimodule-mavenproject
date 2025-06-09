@@ -1,28 +1,28 @@
-// package com.mysbproject.service;
+package com.mysbproject.service;
 
-// import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
-// import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Test;
 
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.boot.autoconfigure.SpringBootApplication;
-// import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.test.context.SpringBootTest;
 
-// @SpringBootTest(properties = {
-// "service.message=Hello, World",
-// })
-// public class MyServiceTest {
+@SpringBootTest(classes = MyServiceTest.TestConfiguration.class, properties = {
+    "spring.profiles.active=test"
+})
+public class MyServiceTest {
 
-// @Autowired
-// private MyService myService;
+  @Autowired
+  private MyService myService;
 
-// @Test
-// public void contextLoads() {
-// assertThat(myService.message()).isNotNull();
-// }
+  // @Test
+  // public void contextLoads() {
+  // assertThat(myService.message()).isNotNull();
+  // }
 
-// @SpringBootApplication(scanBasePackages = "com.mysbproject")
-// static class TestConfiguration {
-// }
+  @SpringBootApplication(scanBasePackages = "com.mysbproject")
+  static class TestConfiguration {
+  }
 
-// }
+}
