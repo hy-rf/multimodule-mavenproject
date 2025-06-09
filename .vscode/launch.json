@@ -1,0 +1,21 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Debug Spring Boot (app module)",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "runtimeExecutable": "./mvnw",
+      "args": [
+        "-pl",
+        "app",
+        "-Dspring-boot.run.fork=false",
+        "-Dspring-boot.run.jvmArguments=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005",
+        "spring-boot:run"
+      ],
+      "port": 5005
+    }
+  ]
+}
