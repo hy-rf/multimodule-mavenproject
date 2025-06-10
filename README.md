@@ -2,14 +2,18 @@
 
 ### How to run
 
+1. Fill your config files in `app` module.
+
+2. Build with maven:
+
 ```shell
 ./mvnw clean install
 ```
 
-app-version.jar had been created under app/target, run
+3. Find your jar file and run.
 
 ```shell
 java -jar app/target/app-version.jar
 ```
 
-to run the application.
+4. API service is now at port 8080.
