@@ -11,6 +11,16 @@
 
     <artifactId>dao</artifactId>
 
+    <dependencies>
+
+        <dependency>
+            <groupId>com.mysbproject</groupId>
+            <artifactId>model</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+    </dependencies>
+
     <build>
         <testResources>
             <testResource>

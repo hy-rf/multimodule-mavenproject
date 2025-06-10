@@ -10,4 +10,10 @@
     </parent>
 
     <artifactId>model</artifactId>
+
+    <build>
+        <plugins>
+
+        </plugins>
+    </build>
 </project>
