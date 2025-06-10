@@ -9,16 +9,5 @@
         <version>0.0.1</version>
     </parent>
 
-    <artifactId>dao</artifactId>
-
-    <build>
-        <testResources>
-            <testResource>
-                <directory>src/test/resources</directory>
-            </testResource>
-            <testResource>
-                <directory>../app/src/test/resources</directory>
-            </testResource>
-        </testResources>
-    </build>
+    <artifactId>model</artifactId>
 </project>
