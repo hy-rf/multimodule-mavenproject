@@ -17,3 +17,5 @@ java -jar app/target/app-version.jar
 ```
 
 4. API service is now at port 8080.
+
+5. You can move jar file to anywhere as standalone runnable jar file.
