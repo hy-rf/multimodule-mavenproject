@@ -12,10 +12,11 @@
         "-pl",
         "app",
         "-Dspring-boot.run.fork=false",
-        "-Dspring-boot.run.jvmArguments=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005",
+        "-Dspring-boot.run.jvmArguments=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8080",
         "spring-boot:run"
       ],
-      "port": 5005
+      "port": 8080,
+      "preLaunchTask": "Maven Clean Install"
     }
   ]
 }
