@@ -1,5 +1,7 @@
 package com.mysbproject.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,9 +24,8 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public User[] getAllUsers() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getAllUsers'");
+  public List<User> getAllUsers() {
+    return userDao.getAllUsers();
   }
 
   @Override

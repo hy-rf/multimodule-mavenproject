@@ -15,9 +15,9 @@ public class UserDaoImpl implements UserDao {
   private EntityManager entityManager;
 
   @Override
-  public User[] getAllUsers() {
+  public List<User> getAllUsers() {
     List<User> users = entityManager.createQuery("SELECT u FROM User u", User.class).getResultList();
-    return users.toArray(new User[0]);
+    return users;
   }
 
   @Override
@@ -47,6 +47,12 @@ public class UserDaoImpl implements UserDao {
     // You can set other fields as needed
 
     saveUser(user);
+  }
+
+  @Override
+  public List<User> getUsers(String filterField, String filterValue, String sortField, boolean ascending) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getUsers'");
   }
 
 }
