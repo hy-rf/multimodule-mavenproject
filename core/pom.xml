@@ -21,4 +21,18 @@
 
 	</dependencies>
 
+	<build>
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+			</testResource>
+			<testResource>
+				<directory>../app/src/test/resources</directory>
+				<includes>
+					<include>application-test.properties</include>
+				</includes>
+			</testResource>
+		</testResources>
+	</build>
+
 </project>
