@@ -2,8 +2,12 @@ package com.mysbproject.dao.User;
 
 import com.mysbproject.model.User;
 import java.util.List;
+import java.util.Optional;
 
 public interface UserDao {
+
+  Optional<User> findByUsername(String username);
+
   List<User> getAllUsers();
 
   void saveUser(User user);

@@ -1,9 +1,12 @@
 package com.mysbproject.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.mysbproject.service.AuthService;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -11,6 +14,9 @@ import jakarta.servlet.http.HttpSession;
 
 @RestController
 public class AuthController {
+
+  @Autowired
+  private AuthService authService;
 
   @Value("${spring.security.user.name}")
   private String adminName;
@@ -31,14 +37,7 @@ public class AuthController {
 
   @PostMapping("/login")
   public String login(@RequestBody LoginRequest loginRequest, HttpSession session, HttpServletResponse response) {
-    if (adminName.equals(loginRequest.username) && adminPassword.equals(loginRequest.password)) {
-      Cookie cookie = new Cookie("myCookie", "cookieValue");
-      cookie.setPath("/");
-      response.addCookie(cookie);
-      session.setAttribute("role", "ADMIN");
-      return "Logged in as admin";
-    }
-    return "Invalid credentials";
+    return authService.loginUser(loginRequest.username, loginRequest.password);
   }
 
   @PostMapping("/logout")

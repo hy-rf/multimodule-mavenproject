@@ -3,8 +3,10 @@ package com.mysbproject.dao.User;
 import com.mysbproject.model.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
@@ -58,6 +60,14 @@ public class UserDaoImpl implements UserDao {
   public List<User> getUsers(String filterField, String filterValue, String sortField, boolean ascending) {
     // TODO Auto-generated method stub
     throw new UnsupportedOperationException("Unimplemented method 'getUsers'");
+  }
+
+  @Override
+  public Optional<User> findByUsername(String username) {
+    String jpql = "SELECT u FROM User u WHERE u.username = :username";
+    TypedQuery<User> query = entityManager.createQuery(jpql, User.class);
+    query.setParameter("username", username);
+    return query.getResultStream().findFirst();
   }
 
 }
