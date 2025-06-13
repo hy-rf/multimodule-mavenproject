@@ -1,5 +1,7 @@
 package com.mysbproject.service;
 
+import com.mysbproject.util.PasswordUtils;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,14 +32,13 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public User getUserById(Long id) {
-    // TODO Auto-generated method stub
     throw new UnsupportedOperationException("Unimplemented method 'getUserById'");
   }
 
   @Override
   public void saveExampleUser() {
-    // TODO Auto-generated method stub
-    userDao.saveExampleUser();
+    String hash = PasswordUtils.hashPassword("hashedpassword"); // Replace with actual password hashing logic
+    userDao.saveExampleUser(hash);
   }
 
   // Additional methods can be added here for user-related operations.

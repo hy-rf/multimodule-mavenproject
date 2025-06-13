@@ -24,7 +24,12 @@ public class UserDaoImpl implements UserDao {
   @Transactional
   public void saveUser(User user) {
     if (user.getId() == null) {
-      entityManager.persist(user);
+      try {
+        entityManager.persist(user);
+      } catch (Exception e) {
+        // Handle exception, e.g., log it or rethrow it
+        throw new RuntimeException("Error saving user: " + e.getMessage(), e);
+      }
     } else {
       entityManager.merge(user);
     }
@@ -32,12 +37,12 @@ public class UserDaoImpl implements UserDao {
 
   @Override
   @Transactional
-  public void saveExampleUser() {
+  public void saveExampleUser(String passwordHash) {
     User user = new User();
-    user.setUsername("testuser");
-    user.setEmail("testuser@example.com");
-    user.setPasswordHash("hashedpassword");
-    user.setFullName("Test User");
+    user.setUsername("testuser2");
+    user.setEmail("testuser2@example.com");
+    user.setPasswordHash(passwordHash);
+    user.setFullName("Test2 User");
     user.setIsActive(true);
     user.setEmailVerified(false);
     user.setTwoFactorEnabled(false);
