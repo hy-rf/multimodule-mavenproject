@@ -29,10 +29,16 @@ public class AuthController {
     public String password;
   }
 
-  @PostMapping("/signup")
-  public String signup() {
+  public static class RegisterRequest {
+    public String username;
+    public String password;
+  }
+
+  @PostMapping("/register")
+  public String signup(@RequestBody RegisterRequest registerRequest, HttpSession session,
+      HttpServletResponse response) {
     // Logic for user signup
-    return "User signed up successfully";
+    return authService.registerUser(registerRequest.username, registerRequest.password);
   }
 
   @PostMapping("/login")

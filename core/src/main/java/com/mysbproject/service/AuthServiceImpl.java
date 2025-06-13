@@ -17,7 +17,16 @@ public class AuthServiceImpl implements AuthService {
 
   @Override
   public String registerUser(String username, String password) {
-    // Logic to register a user
+    if (userDao.findByUsername(username).isPresent()) {
+      return "User already exists";
+    }
+    String hash = PasswordUtils.hashPassword(password);
+
+    User user = new User();
+    user.setUsername(username);
+    user.setPasswordHash(hash);
+
+    userDao.saveUser(user);
     return "User registered successfully";
   }
 
