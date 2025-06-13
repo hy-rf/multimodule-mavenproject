@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mysbproject.service.AuthService;
+import com.mysbproject.service.LoginRateLimiterService;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,6 +18,9 @@ public class AuthController {
 
   @Autowired
   private AuthService authService;
+
+  @Autowired
+  private LoginRateLimiterService loginRateLimiterService;
 
   @Value("${spring.security.user.name}")
   private String adminName;
@@ -43,6 +47,9 @@ public class AuthController {
 
   @PostMapping("/login")
   public String login(@RequestBody LoginRequest loginRequest, HttpSession session, HttpServletResponse response) {
+    if (!loginRateLimiterService.isAllowed(loginRequest.username)) {
+      return "Too many login attempts. Please try again later.";
+    }
     return authService.loginUser(loginRequest.username, loginRequest.password);
   }
 
