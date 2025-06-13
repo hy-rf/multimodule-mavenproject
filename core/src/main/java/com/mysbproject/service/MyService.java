@@ -19,7 +19,7 @@ public class MyService {
     }
 
     public String message() {
-        getDatabase.printTableNames();
+        // getDatabase.printTableNames();
         return this.serviceProperties.getMessage();
     }
 }
