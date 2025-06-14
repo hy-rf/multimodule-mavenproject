@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mysbproject.dao.User.UserDao;
+import com.mysbproject.dto.Auth.RegisterResult;
+import com.mysbproject.dto.Auth.RegisterStatus;
 import com.mysbproject.model.User;
 import com.mysbproject.util.PasswordUtils;
 
@@ -16,9 +18,9 @@ public class AuthServiceImpl implements AuthService {
   private UserDao userDao;
 
   @Override
-  public String registerUser(String username, String password) {
+  public RegisterResult registerUser(String username, String password) {
     if (userDao.findByUsername(username).isPresent()) {
-      return "User already exists";
+      return new RegisterResult(RegisterStatus.USERNAME_TAKEN);
     }
     String hash = PasswordUtils.hashPassword(password);
 
@@ -27,7 +29,7 @@ public class AuthServiceImpl implements AuthService {
     user.setPasswordHash(hash);
 
     userDao.saveUser(user);
-    return "User registered successfully";
+    return new RegisterResult(RegisterStatus.SUCCESS);
   }
 
   @Override

@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mysbproject.dto.Auth.RegisterResult;
+import com.mysbproject.dto.Auth.RegisterStatus;
 import com.mysbproject.service.AuthService;
 import com.mysbproject.service.LoginRateLimiterService;
 
@@ -41,8 +43,14 @@ public class AuthController {
   @PostMapping("/register")
   public String signup(@RequestBody RegisterRequest registerRequest, HttpSession session,
       HttpServletResponse response) {
-    // Logic for user signup
-    return authService.registerUser(registerRequest.username, registerRequest.password);
+    RegisterResult result = authService.registerUser(registerRequest.username, registerRequest.password);
+    return switch (result.getStatus()) {
+      case SUCCESS -> "User registered successfully";
+      case USERNAME_TAKEN -> "Username is already taken";
+      case INVALID_PASSWORD -> "Invalid password format";
+      case ERROR -> "An error occurred during registration";
+      default -> "Unknown registration status";
+    };
   }
 
   @PostMapping("/login")
