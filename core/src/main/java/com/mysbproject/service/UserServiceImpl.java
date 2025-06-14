@@ -4,6 +4,8 @@ import com.mysbproject.util.PasswordUtils;
 
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,7 @@ import com.mysbproject.model.User;
 
 @Service
 public class UserServiceImpl implements UserService {
+  private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
 
   @Autowired
   UserDao userDao;
@@ -27,6 +30,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public List<User> getAllUsers() {
+    logger.info("Fetching all users from the database.");
     return userDao.getAllUsers();
   }
 
