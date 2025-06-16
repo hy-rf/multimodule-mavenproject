@@ -65,10 +65,10 @@ public class AuthController {
         response.setHeader("Authorization", "Bearer " + token);
         yield "Login successful";
       }
-      case USER_NOT_FOUND -> "User not found";
-      case INVALID_PASSWORD -> "Invalid password";
-      case ERROR -> "An error occurred during login";
-      default -> "Unknown login status";
+      case USER_NOT_FOUND -> "Login failed";
+      case INVALID_PASSWORD -> "Login failed";
+      case ERROR -> "Login failed";
+      default -> "Login failed";
     };
   }
 
