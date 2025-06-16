@@ -14,7 +14,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-/// * JwtAuthenticationFilter is a filter that intercepts HTTP requests to check for JWT tokens.
+/// * AuthorizeFilter is a filter that intercepts HTTP requests to check for JWT tokens.
 /* It extracts the token from the request, verifies it, and processes the JWT data.
 * This filter is executed once per request.
 */
