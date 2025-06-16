@@ -7,12 +7,13 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.mysbproject.security.JwtAuthenticationFilter;
+import com.mysbproject.security.AuthorizeFilter;
 
 @Configuration
 public class SecurityConfig {
+
   @Autowired
-  private JwtAuthenticationFilter jwtAuthenticationFilter;
+  private AuthorizeFilter authorizeFilter;
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -22,8 +23,8 @@ public class SecurityConfig {
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/", "/login", "/register").permitAll()
             .anyRequest().authenticated());
-    return http.addFilterBefore(jwtAuthenticationFilter,
-        UsernamePasswordAuthenticationFilter.class)
-        .build();
+    http.addFilterBefore(authorizeFilter,
+        UsernamePasswordAuthenticationFilter.class);
+    return http.build();
   }
 }

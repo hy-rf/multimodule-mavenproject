@@ -19,7 +19,7 @@ import jakarta.servlet.http.HttpServletResponse;
 * This filter is executed once per request.
 */
 @Component
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
+public class AuthorizeFilter extends OncePerRequestFilter {
 
   private JwtUtils jwtUtils = new JwtUtils();
 
