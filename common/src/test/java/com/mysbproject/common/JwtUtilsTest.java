@@ -1,5 +1,6 @@
-package com.mysbproject.util;
+package com.mysbproject.common;
 
+import com.mysbproject.common.JwtUtils;
 import com.mysbproject.dto.JwtData;
 import org.junit.jupiter.api.Test;
 
