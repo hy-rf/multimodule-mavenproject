@@ -4,6 +4,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.mysbproject.common.JwtUtils;
@@ -18,6 +19,9 @@ import com.mysbproject.util.PasswordUtils;
 
 @Service
 public class AuthServiceImpl implements AuthService {
+
+  @Value("${jwt.secret}")
+  private String jwtSecret;
 
   @Autowired
   private UserDao userDao;
@@ -57,7 +61,7 @@ public class AuthServiceImpl implements AuthService {
     Long userId = user.getId();
     Set<Role> roles = user.getRoles();
     String token = jwtUtils.generateToken(userId, roles.stream().map(Role::getId).toList(),
-        "mySuperSecretKeyForJwtTesting1234567890",
+        jwtSecret,
         3600000L);
     return new LoginResult("Login successful", LoginStatus.SUCCESS, token);
   }

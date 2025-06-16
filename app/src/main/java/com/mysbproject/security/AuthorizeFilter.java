@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -24,14 +25,23 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class AuthorizeFilter extends OncePerRequestFilter {
 
+  @Value("${jwt.secret}")
+  private String jwtSecret;
+
   private JwtUtils jwtUtils = new JwtUtils();
+
+  @Override
+  protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+    String path = request.getServletPath();
+    return path.equals("/") || path.equals("/login") || path.equals("/register");
+  }
 
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
     // TODO Auto-generated method stub
     String token = jwtUtils.resolveToken(request);
-    JwtData jwtData = jwtUtils.verifyToken(token, "mySuperSecretKeyForJwtTesting1234567890");
+    JwtData jwtData = jwtUtils.verifyToken(token, jwtSecret);
     System.out.println("JWT Data: " + jwtData.getUserId().longValue());
     // Handle the case where JWT data have values which means user is logged in
     if (jwtData != null && jwtData.getUserId() != null) {
