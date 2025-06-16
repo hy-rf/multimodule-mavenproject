@@ -33,6 +33,7 @@ public class AuthorizeFilter extends OncePerRequestFilter {
     String token = jwtUtils.resolveToken(request);
     JwtData jwtData = jwtUtils.verifyToken(token, "mySuperSecretKeyForJwtTesting1234567890");
     System.out.println("JWT Data: " + jwtData.getUserId().longValue());
+    // Handle the case where JWT data have values which means user is logged in
     if (jwtData != null && jwtData.getUserId() != null) {
       // Set authentication in the security context
       UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(jwtData.getUserId(),
