@@ -4,7 +4,6 @@ import com.mysbproject.service.MyService;
 import com.mysbproject.service.UserServiceImpl;
 
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.Cookie;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
