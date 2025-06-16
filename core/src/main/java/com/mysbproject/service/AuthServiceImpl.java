@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mysbproject.dao.User.UserDao;
+import com.mysbproject.dto.Auth.LoginResult;
+import com.mysbproject.dto.Auth.LoginStatus;
 import com.mysbproject.dto.Auth.RegisterResult;
 import com.mysbproject.dto.Auth.RegisterStatus;
 import com.mysbproject.model.User;
@@ -33,16 +35,20 @@ public class AuthServiceImpl implements AuthService {
   }
 
   @Override
-  public String loginUser(String username, String password) {
+  public LoginResult loginUser(String username, String password) {
     Optional<User> userOpt = userDao.findByUsername(username);
     if (userOpt.isPresent() == false) {
-      return "User not found";
+      return new LoginResult("User not found", LoginStatus.USER_NOT_FOUND);
     }
     User user = userOpt.get();
     if (!PasswordUtils.verifyPassword(password, user.getPasswordHash())) {
-      return "Invalid password";
+      return new LoginResult("Invalid password", LoginStatus.INVALID_PASSWORD);
     }
-    return "User logged in successfully";
+    // Logic to set user session or token can be added here
+    // For example, you might want to set a session attribute or generate a JWT
+    // token
+    System.out.println("User " + user.getUsername() + " logged in successfully.");
+    return new LoginResult("Login successful", LoginStatus.SUCCESS);
   }
 
   @Override

@@ -6,12 +6,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mysbproject.dto.Auth.LoginResult;
 import com.mysbproject.dto.Auth.RegisterResult;
-import com.mysbproject.dto.Auth.RegisterStatus;
 import com.mysbproject.service.AuthService;
 import com.mysbproject.service.LoginRateLimiterService;
 
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
@@ -58,7 +57,17 @@ public class AuthController {
     if (!loginRateLimiterService.isAllowed(loginRequest.username)) {
       return "Too many login attempts. Please try again later.";
     }
-    return authService.loginUser(loginRequest.username, loginRequest.password);
+    LoginResult result = authService.loginUser(loginRequest.username, loginRequest.password);
+    return switch (result.getStatus()) {
+      case SUCCESS -> {
+        session.setAttribute("username", loginRequest.username);
+        yield "Login successful";
+      }
+      case USER_NOT_FOUND -> "User not found";
+      case INVALID_PASSWORD -> "Invalid password";
+      case ERROR -> "An error occurred during login";
+      default -> "Unknown login status";
+    };
   }
 
   @PostMapping("/logout")
