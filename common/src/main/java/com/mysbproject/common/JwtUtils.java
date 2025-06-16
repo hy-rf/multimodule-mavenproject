@@ -14,10 +14,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class JwtUtils {
 
     // Generate a JWT token with userId and roleIds
     public String generateToken(Long userId, List<Long> roleIds, String secretKey, long expirationMillis) {
+        System.out.println("Generating JWT token for userId: " + userId + ", roleIds: " + roleIds);
         Key key = Keys.hmacShaKeyFor(secretKey.getBytes());
         return Jwts.builder()
                 .claim("userId", userId)

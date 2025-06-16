@@ -1,8 +1,11 @@
 package com.mysbproject.security;
 
 import java.io.IOException;
+import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -28,8 +31,14 @@ public class AuthorizeFilter extends OncePerRequestFilter {
       throws ServletException, IOException {
     // TODO Auto-generated method stub
     String token = jwtUtils.resolveToken(request);
-    JwtData jwtData = jwtUtils.verifyToken(token, "your-secret-key");
-    System.out.println("JWT Data: " + jwtData);
+    JwtData jwtData = jwtUtils.verifyToken(token, "mySuperSecretKeyForJwtTesting1234567890");
+    System.out.println("JWT Data: " + jwtData.getUserId().longValue());
+    if (jwtData != null && jwtData.getUserId() != null) {
+      // Set authentication in the security context
+      UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(jwtData.getUserId(),
+          null, Collections.emptyList());
+      SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
     filterChain.doFilter(request, response);
   }
 

@@ -23,6 +23,7 @@ public class UserController {
     return "User information retrieved successfully";
   }
 
+  @PreAuthorize("isAuthenticated()")
   @GetMapping("/users")
   public List<User> getAllUsers() {
     // Logic to retrieve all users

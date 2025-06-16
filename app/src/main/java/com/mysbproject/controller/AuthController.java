@@ -61,6 +61,8 @@ public class AuthController {
     return switch (result.getStatus()) {
       case SUCCESS -> {
         session.setAttribute("username", loginRequest.username);
+        String token = result.getToken();
+        response.setHeader("Authorization", "Bearer " + token);
         yield "Login successful";
       }
       case USER_NOT_FOUND -> "User not found";

@@ -14,7 +14,7 @@ public class LoginRateLimiterService {
 
     public boolean isAllowed(String username) {
         String key = "login_attempts:" + username;
-        int maxAttempts = 5;
+        int maxAttempts = 99;
         Duration window = Duration.ofMinutes(10);
 
         Long attempts = redisTemplate.opsForValue().increment(key);
