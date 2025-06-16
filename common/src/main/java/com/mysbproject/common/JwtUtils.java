@@ -7,6 +7,7 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 
 import java.security.Key;
 import java.util.Date;
@@ -16,7 +17,7 @@ import java.util.stream.Collectors;
 public class JwtUtils {
 
     // Generate a JWT token with userId and roleIds
-    public static String generateToken(Long userId, List<Long> roleIds, String secretKey, long expirationMillis) {
+    public String generateToken(Long userId, List<Long> roleIds, String secretKey, long expirationMillis) {
         Key key = Keys.hmacShaKeyFor(secretKey.getBytes());
         return Jwts.builder()
                 .claim("userId", userId)
@@ -28,7 +29,7 @@ public class JwtUtils {
     }
 
     // Verify JWT and extract JwtData (userId and roleIds)
-    public static JwtData verifyToken(String token, String secretKey) {
+    public JwtData verifyToken(String token, String secretKey) {
         try {
             Key key = Keys.hmacShaKeyFor(secretKey.getBytes());
             Jws<Claims> jws = Jwts.parserBuilder()
@@ -46,5 +47,13 @@ public class JwtUtils {
         } catch (JwtException | IllegalArgumentException e) {
             return null;
         }
+    }
+
+    public String resolveToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        }
+        return null;
     }
 }

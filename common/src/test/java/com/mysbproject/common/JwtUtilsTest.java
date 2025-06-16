@@ -1,6 +1,5 @@
 package com.mysbproject.common;
 
-import com.mysbproject.common.JwtUtils;
 import com.mysbproject.dto.JwtData;
 import org.junit.jupiter.api.Test;
 
@@ -11,6 +10,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class JwtUtilsTest {
 
+  private JwtUtils jwtUtils = new JwtUtils();
+
   private static final String SECRET_KEY = "mySuperSecretKeyForJwtTesting1234567890"; // should be at least 32 bytes for
                                                                                       // HS256
 
@@ -20,10 +21,10 @@ class JwtUtilsTest {
     List<Long> roleIds = Arrays.asList(1L, 2L, 3L);
     long expirationMillis = 60_000; // 1 minute
 
-    String token = JwtUtils.generateToken(userId, roleIds, SECRET_KEY, expirationMillis);
+    String token = jwtUtils.generateToken(userId, roleIds, SECRET_KEY, expirationMillis);
     assertNotNull(token);
 
-    JwtData jwtData = JwtUtils.verifyToken(token, SECRET_KEY);
+    JwtData jwtData = jwtUtils.verifyToken(token, SECRET_KEY);
     assertNotNull(jwtData);
     assertEquals(userId, jwtData.getUserId());
     assertEquals(roleIds, jwtData.getRoleIds());
@@ -32,7 +33,7 @@ class JwtUtilsTest {
   @Test
   void testVerifyToken_InvalidToken() {
     String invalidToken = "invalid.jwt.token";
-    JwtData jwtData = JwtUtils.verifyToken(invalidToken, SECRET_KEY);
+    JwtData jwtData = jwtUtils.verifyToken(invalidToken, SECRET_KEY);
     assertNull(jwtData);
   }
 
@@ -40,10 +41,10 @@ class JwtUtilsTest {
   void testVerifyToken_WrongSecret() {
     Long userId = 99L;
     List<Long> roleIds = Arrays.asList(5L, 6L);
-    String token = JwtUtils.generateToken(userId, roleIds, SECRET_KEY, 60_000);
+    String token = jwtUtils.generateToken(userId, roleIds, SECRET_KEY, 60_000);
 
     String wrongSecret = "anotherSecretKeyThatIsWrong1234567890";
-    JwtData jwtData = JwtUtils.verifyToken(token, wrongSecret);
+    JwtData jwtData = jwtUtils.verifyToken(token, wrongSecret);
     assertNull(jwtData);
   }
 }
