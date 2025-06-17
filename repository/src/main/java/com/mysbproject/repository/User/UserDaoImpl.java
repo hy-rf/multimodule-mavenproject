@@ -1,4 +1,4 @@
-package com.mysbproject.dao.User;
+package com.mysbproject.repository.User;
 
 import com.mysbproject.model.User;
 import jakarta.persistence.EntityManager;

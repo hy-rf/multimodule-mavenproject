@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.mysbproject.common.JwtUtils;
-import com.mysbproject.dao.User.UserDao;
+import com.mysbproject.repository.User.UserDao;
 import com.mysbproject.dto.Auth.LoginResult;
 import com.mysbproject.dto.Auth.LoginStatus;
 import com.mysbproject.dto.Auth.RegisterResult;

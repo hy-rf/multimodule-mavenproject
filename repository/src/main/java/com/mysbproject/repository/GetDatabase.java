@@ -1,4 +1,4 @@
-package com.mysbproject.dao;
+package com.mysbproject.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

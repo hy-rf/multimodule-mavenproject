@@ -9,7 +9,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.mysbproject.dao.User.UserDao;
+import com.mysbproject.repository.User.UserDao;
 import com.mysbproject.model.User;
 
 @Service

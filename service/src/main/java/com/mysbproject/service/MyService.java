@@ -1,6 +1,6 @@
 package com.mysbproject.service;
 
-import com.mysbproject.dao.GetDatabase;
+import com.mysbproject.repository.GetDatabase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
