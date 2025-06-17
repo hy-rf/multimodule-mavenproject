@@ -9,7 +9,7 @@
 		<version>0.0.1</version>
 	</parent>
 
-	<artifactId>core</artifactId>
+	<artifactId>service</artifactId>
 
 	<dependencies>
 

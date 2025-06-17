@@ -10,7 +10,7 @@
         <module>common</module>
         <module>model</module>
         <module>dao</module>
-        <module>core</module>
+        <module>service</module>
         <module>app</module>
     </modules>
 

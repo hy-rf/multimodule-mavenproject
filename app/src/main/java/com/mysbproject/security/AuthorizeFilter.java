@@ -42,14 +42,15 @@ public class AuthorizeFilter extends OncePerRequestFilter {
     // TODO Auto-generated method stub
     String token = jwtUtils.resolveToken(request);
     JwtData jwtData = jwtUtils.verifyToken(token, jwtSecret);
-    System.out.println("JWT Data: " + jwtData.getUserId().longValue());
     // Handle the case where JWT data have values which means user is logged in
-    if (jwtData != null && jwtData.getUserId() != null) {
-      // Set authentication in the security context
-      UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(jwtData.getUserId(),
-          null, Collections.emptyList());
-      SecurityContextHolder.getContext().setAuthentication(authentication);
+    if (jwtData == null) {
+      System.out.println("JWT Data is null, user is not logged in.");
+      return;
     }
+    // Set authentication in the security context
+    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(jwtData.getUserId(),
+        null, Collections.emptyList());
+    SecurityContextHolder.getContext().setAuthentication(authentication);
     filterChain.doFilter(request, response);
   }
 

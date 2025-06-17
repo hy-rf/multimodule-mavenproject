@@ -23,12 +23,6 @@ public class AuthController {
   @Autowired
   private LoginRateLimiterService loginRateLimiterService;
 
-  @Value("${spring.security.user.name}")
-  private String adminName;
-
-  @Value("${spring.security.user.password}")
-  private String adminPassword;
-
   public static class LoginRequest {
     public String username;
     public String password;
