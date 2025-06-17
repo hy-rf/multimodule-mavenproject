@@ -1,7 +1,6 @@
 package com.mysbproject.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,6 +10,7 @@ import com.mysbproject.dto.Auth.RegisterResult;
 import com.mysbproject.service.AuthService;
 import com.mysbproject.service.LoginRateLimiterService;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
@@ -54,9 +54,16 @@ public class AuthController {
     LoginResult result = authService.loginUser(loginRequest.username, loginRequest.password);
     return switch (result.getStatus()) {
       case SUCCESS -> {
-        session.setAttribute("username", loginRequest.username);
         String token = result.getToken();
+        Cookie cookie = new Cookie("token", token);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(60 * 60);
+        // Uncomment if using HTTPS
+        // cookie.setSecure(true);
+        response.addCookie(cookie);
         response.setHeader("Authorization", "Bearer " + token);
+
         yield "Login successful";
       }
       case USER_NOT_FOUND -> "Login failed";
