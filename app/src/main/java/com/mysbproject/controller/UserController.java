@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,5 +30,13 @@ public class UserController {
   public List<User> getAllUsers() {
     // Logic to retrieve all users
     return userService.getAllUsers();
+  }
+
+  // @PreAuthorize("isAuthenticated()")
+  @GetMapping("/user")
+  public Boolean getCurrentUser() {
+    Authentication p = SecurityContextHolder.getContext().getAuthentication();
+    System.out.println(p);
+    return p.isAuthenticated();
   }
 }
