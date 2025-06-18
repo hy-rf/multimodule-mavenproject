@@ -18,7 +18,7 @@ public class HomeController {
     @Value("${home.title}")
     private String title;
 
-    @GetMapping("/")
+    @GetMapping("/home")
     public String home(HttpServletResponse response) {
         logger.info("Home endpoint accessed");
         return title;

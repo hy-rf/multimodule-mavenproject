@@ -33,6 +33,7 @@ public class AuthorizeFilter extends OncePerRequestFilter {
   @Override
   protected boolean shouldNotFilter(@NonNull HttpServletRequest request) throws ServletException {
     String path = request.getServletPath();
+    System.out.println(path);
     return path.equals("/") || path.equals("/login") || path.equals("/register");
   }
 
@@ -45,12 +46,13 @@ public class AuthorizeFilter extends OncePerRequestFilter {
     // Handle the case where JWT data have values which means user is logged in
     if (jwtData == null) {
       System.out.println("JWT Data is null, user is not logged in.");
-      return;
+    } else {
+      // Set authentication in the security context
+      UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(jwtData.getUserId(),
+          null, Collections.emptyList());
+      SecurityContextHolder.getContext().setAuthentication(authentication);
+
     }
-    // Set authentication in the security context
-    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(jwtData.getUserId(),
-        null, Collections.emptyList());
-    SecurityContextHolder.getContext().setAuthentication(authentication);
     filterChain.doFilter(request, response);
   }
 
