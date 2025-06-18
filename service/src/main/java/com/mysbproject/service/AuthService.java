@@ -9,4 +9,6 @@ public interface AuthService {
   LoginResult loginUser(String username, String password);
 
   void logoutUser();
+
+  String refreshToken();
 }

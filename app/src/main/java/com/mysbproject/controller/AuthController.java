@@ -73,6 +73,22 @@ public class AuthController {
     };
   }
 
+  @PostMapping("/refresh")
+  public String refresh(HttpServletResponse response) {
+    // Logic to refresh the authentication token
+    String newToken = authService.refreshToken();
+    Cookie cookie = new Cookie("token", newToken);
+    cookie.setHttpOnly(true);
+    cookie.setPath("/");
+    cookie.setMaxAge(60 * 60);
+    // Uncomment if using HTTPS
+    // cookie.setSecure(true);
+    response.addCookie(cookie);
+    response.setHeader("Authorization", "Bearer " + newToken);
+
+    return "Token refreshed successfully";
+  }
+
   @PostMapping("/logout")
   public String logout() {
     // Logic for user logout

@@ -72,7 +72,6 @@ public class UserDaoImpl implements UserDao {
 
   @Override
   public User getUserById(Long id) {
-    // TODO Auto-generated method stub
     return entityManager.find(User.class, id);
   }
 

@@ -70,4 +70,10 @@ public class AuthServiceImpl implements AuthService {
   public void logoutUser() {
     // Logic to log out a user
   }
+
+  @Override
+  public String refreshToken() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'refreshToken'");
+  }
 }
