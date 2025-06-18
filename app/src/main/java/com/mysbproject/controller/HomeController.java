@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,12 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class HomeController {
     private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
 
-    @Autowired
-    MyService myService;
+    @Value("${home.title}")
+    private String title;
 
     @GetMapping("/")
     public String home(HttpServletResponse response) {
         logger.info("Home endpoint accessed");
-        return myService.message();
+        return title;
     }
 }
