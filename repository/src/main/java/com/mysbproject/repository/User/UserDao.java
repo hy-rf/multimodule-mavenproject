@@ -15,4 +15,6 @@ public interface UserDao {
   void saveExampleUser(String passwordHash);
 
   List<User> getUsers(String filterField, String filterValue, String sortField, boolean ascending);
+
+  User getUserById(Long id);
 }

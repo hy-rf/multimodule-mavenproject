@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public User getUserById(Long id) {
-    throw new UnsupportedOperationException("Unimplemented method 'getUserById'");
+    return userDao.getUserById(id);
   }
 
   @Override
