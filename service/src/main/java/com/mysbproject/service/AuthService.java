@@ -1,6 +1,7 @@
 package com.mysbproject.service;
 
 import com.mysbproject.dto.Auth.LoginResult;
+import com.mysbproject.dto.Auth.RefreshResult;
 import com.mysbproject.dto.Auth.RegisterResult;
 
 public interface AuthService {
@@ -10,5 +11,5 @@ public interface AuthService {
 
   void logoutUser();
 
-  String refreshToken();
+  RefreshResult refreshToken(String token, String refreshToken);
 }

@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mysbproject.common.JwtUtils;
 import com.mysbproject.dto.JwtData;
 import com.mysbproject.dto.Auth.LoginResult;
+import com.mysbproject.dto.Auth.RefreshResult;
+import com.mysbproject.dto.Auth.RefreshStatus;
 import com.mysbproject.dto.Auth.RegisterResult;
 import com.mysbproject.service.AuthService;
 import com.mysbproject.service.LoginRateLimiterService;
@@ -21,12 +23,6 @@ import jakarta.servlet.http.HttpSession;
 
 @RestController
 public class AuthController {
-
-  @Value("${jwt.secret}")
-  private String jwtSecret;
-
-  @Value("${jwt.secret.refresh}")
-  private String jwtSecretRefresh;
 
   private JwtUtils jwtUtils = new JwtUtils();
 
@@ -92,20 +88,24 @@ public class AuthController {
   public String refresh(HttpServletRequest request, HttpServletResponse response) {
     String token = jwtUtils.resolveToken(request);
     String refreshToken = jwtUtils.resolveRefreshToken(request);
-    JwtData jwtData = jwtUtils.verifyToken(token, jwtSecret);
-    JwtData refreshData = jwtUtils.verifyToken(refreshToken, jwtSecretRefresh);
-    System.out.println(jwtData);
-    System.out.println(refreshData);
-    // TODO compare token at service layer to see if data from refresh token is
-    // valid
-    String newToken = authService.refreshToken();
-    Cookie cookie = new Cookie("token", newToken);
-    cookie.setHttpOnly(true);
-    cookie.setPath("/");
-    cookie.setMaxAge(3600);
+    RefreshResult result = authService.refreshToken(token, refreshToken);
+    if (result.getRefreshStatus() == RefreshStatus.FAIL) {
+      return "Fail";
+    }
+    Cookie tokenCookie = new Cookie("token", result.getNewToken());
+    tokenCookie.setHttpOnly(true);
+    tokenCookie.setPath("/");
+    tokenCookie.setMaxAge(3600);
     // Uncomment if using HTTPS
-    // cookie.setSecure(true);
-    response.addCookie(cookie);
+    // tokenCookie.setSecure(true);
+    response.addCookie(tokenCookie);
+    Cookie refreshTokenCookie = new Cookie("refresh", result.getNewFreshToken());
+    refreshTokenCookie.setHttpOnly(true);
+    refreshTokenCookie.setPath("/");
+    refreshTokenCookie.setMaxAge(60000);
+    // Uncomment if using HTTPS
+    // refreshTokenCookie.setSecure(true);
+    response.addCookie(refreshTokenCookie);
 
     return "Token refreshed successfully";
   }

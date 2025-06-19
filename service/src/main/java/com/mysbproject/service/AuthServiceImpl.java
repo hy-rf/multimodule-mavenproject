@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 import com.mysbproject.common.JwtUtils;
 import com.mysbproject.common.PasswordUtils;
 import com.mysbproject.repository.User.UserDao;
+import com.mysbproject.dto.JwtData;
 import com.mysbproject.dto.Auth.LoginResult;
 import com.mysbproject.dto.Auth.LoginStatus;
+import com.mysbproject.dto.Auth.RefreshResult;
 import com.mysbproject.dto.Auth.RegisterResult;
 import com.mysbproject.dto.Auth.RegisterStatus;
 import com.mysbproject.model.Role;
@@ -77,7 +79,11 @@ public class AuthServiceImpl implements AuthService {
   }
 
   @Override
-  public String refreshToken() {
+  public RefreshResult refreshToken(String token, String refreshToken) {
+    JwtData jwtData = jwtUtils.verifyToken(token, jwtSecret);
+    JwtData refreshData = jwtUtils.verifyToken(refreshToken, jwtSecretRefresh);
+    System.out.println(jwtData);
+    System.out.println(refreshData);
     // TODO Auto-generated method stub
     throw new UnsupportedOperationException("Unimplemented method 'refreshToken'");
   }
