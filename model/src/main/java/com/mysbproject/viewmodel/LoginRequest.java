@@ -1,5 +1,9 @@
 package com.mysbproject.viewmodel;
 
-public class LoginRequest {
+import lombok.Getter;
 
+@Getter
+public class LoginRequest {
+  private String username;
+  private String password;
 }

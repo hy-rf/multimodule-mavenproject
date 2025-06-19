@@ -9,6 +9,7 @@ import com.mysbproject.dto.Auth.LoginResult;
 import com.mysbproject.dto.Auth.RegisterResult;
 import com.mysbproject.service.AuthService;
 import com.mysbproject.service.LoginRateLimiterService;
+import com.mysbproject.viewmodel.LoginRequest;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,11 +23,6 @@ public class AuthController {
 
   @Autowired
   private LoginRateLimiterService loginRateLimiterService;
-
-  public static class LoginRequest {
-    public String username;
-    public String password;
-  }
 
   public static class RegisterRequest {
     public String username;
@@ -48,10 +44,10 @@ public class AuthController {
 
   @PostMapping("/login")
   public String login(@RequestBody LoginRequest loginRequest, HttpSession session, HttpServletResponse response) {
-    if (!loginRateLimiterService.isAllowed(loginRequest.username)) {
+    if (!loginRateLimiterService.isAllowed(loginRequest.getUsername())) {
       return "Too many login attempts. Please try again later.";
     }
-    LoginResult result = authService.loginUser(loginRequest.username, loginRequest.password);
+    LoginResult result = authService.loginUser(loginRequest.getUsername(), loginRequest.getPassword());
     return switch (result.getStatus()) {
       case SUCCESS -> {
         String token = result.getToken();
