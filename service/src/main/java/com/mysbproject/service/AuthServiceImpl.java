@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.mysbproject.common.JwtUtils;
+import com.mysbproject.common.PasswordUtils;
 import com.mysbproject.repository.User.UserDao;
 import com.mysbproject.dto.Auth.LoginResult;
 import com.mysbproject.dto.Auth.LoginStatus;
@@ -15,7 +16,6 @@ import com.mysbproject.dto.Auth.RegisterResult;
 import com.mysbproject.dto.Auth.RegisterStatus;
 import com.mysbproject.model.Role;
 import com.mysbproject.model.User;
-import com.mysbproject.util.PasswordUtils;
 
 @Service
 public class AuthServiceImpl implements AuthService {
