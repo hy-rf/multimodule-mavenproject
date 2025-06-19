@@ -33,13 +33,15 @@ public class AuthorizeFilter extends OncePerRequestFilter {
 
   private JwtUtils jwtUtils = new JwtUtils();
 
-  private static final List<String> EXCLUDED_PATHS = List.of("/", "/login", "/register", "/refresh");
+  // private static final List<String> EXCLUDED_PATHS = List.of("/", "/login",
+  // "/register", "/refresh", "/home");
 
-  @Override
-  protected boolean shouldNotFilter(@NonNull HttpServletRequest request) throws ServletException {
-    String path = request.getRequestURI();
-    return EXCLUDED_PATHS.stream().anyMatch(path::startsWith);
-  }
+  // @Override
+  // protected boolean shouldNotFilter(@NonNull HttpServletRequest request) throws
+  // ServletException {
+  // String path = request.getRequestURI();
+  // return EXCLUDED_PATHS.stream().anyMatch(path::startsWith);
+  // }
 
   @Override
   protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
