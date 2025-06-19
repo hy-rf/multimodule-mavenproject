@@ -67,4 +67,15 @@ public class JwtUtils {
         }
         return null;
     }
+
+    public String resolveRefreshToken(HttpServletRequest request) {
+        if (request.getCookies() != null) {
+            for (jakarta.servlet.http.Cookie cookie : request.getCookies()) {
+                if ("refresh".equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null;
+    }
 }

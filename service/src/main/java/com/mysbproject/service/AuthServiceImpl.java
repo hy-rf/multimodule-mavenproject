@@ -23,6 +23,9 @@ public class AuthServiceImpl implements AuthService {
   @Value("${jwt.secret}")
   private String jwtSecret;
 
+  @Value("${jwt.secret.refresh}")
+  private String jwtSecretRefresh;
+
   @Autowired
   private UserDao userDao;
 
@@ -48,11 +51,11 @@ public class AuthServiceImpl implements AuthService {
   public LoginResult loginUser(String username, String password) {
     Optional<User> userOpt = userDao.findByUsername(username);
     if (userOpt.isPresent() == false) {
-      return new LoginResult("User not found", LoginStatus.USER_NOT_FOUND, null);
+      return new LoginResult("User not found", LoginStatus.USER_NOT_FOUND, null, null);
     }
     User user = userOpt.get();
     if (!PasswordUtils.verifyPassword(password, user.getPasswordHash())) {
-      return new LoginResult("Invalid password", LoginStatus.INVALID_PASSWORD, null);
+      return new LoginResult("Invalid password", LoginStatus.INVALID_PASSWORD, null, null);
     }
     // Logic to set user session or token can be added here
     // For example, you might want to set a session attribute or generate a JWT
@@ -61,9 +64,11 @@ public class AuthServiceImpl implements AuthService {
     Long userId = user.getId();
     Set<Role> roles = user.getRoles();
     String token = jwtUtils.generateToken(userId, roles.stream().map(Role::getId).toList(),
-        jwtSecret,
-        3600000L);
-    return new LoginResult("Login successful", LoginStatus.SUCCESS, token);
+        jwtSecret, 60000L);
+    String refreshToken = jwtUtils.generateToken(userId, roles.stream().map(Role::getId).toList(),
+        jwtSecretRefresh, 3600000L);
+    // TODO add token to redis
+    return new LoginResult("Login successful", LoginStatus.SUCCESS, token, refreshToken);
   }
 
   @Override

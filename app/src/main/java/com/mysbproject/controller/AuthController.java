@@ -1,10 +1,13 @@
 package com.mysbproject.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mysbproject.common.JwtUtils;
+import com.mysbproject.dto.JwtData;
 import com.mysbproject.dto.Auth.LoginResult;
 import com.mysbproject.dto.Auth.RegisterResult;
 import com.mysbproject.service.AuthService;
@@ -12,11 +15,20 @@ import com.mysbproject.service.LoginRateLimiterService;
 import com.mysbproject.viewmodel.LoginRequest;
 
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 @RestController
 public class AuthController {
+
+  @Value("${jwt.secret}")
+  private String jwtSecret;
+
+  @Value("${jwt.secret.refresh}")
+  private String jwtSecretRefresh;
+
+  private JwtUtils jwtUtils = new JwtUtils();
 
   @Autowired
   private AuthService authService;
@@ -54,11 +66,18 @@ public class AuthController {
         Cookie cookie = new Cookie("token", token);
         cookie.setHttpOnly(true);
         cookie.setPath("/");
-        cookie.setMaxAge(60 * 60);
+        cookie.setMaxAge(3600);
         // Uncomment if using HTTPS
         // cookie.setSecure(true);
         response.addCookie(cookie);
-        response.setHeader("Authorization", "Bearer " + token);
+        String refreshToken = result.getRefresh();
+        Cookie cookie2 = new Cookie("refresh", refreshToken);
+        cookie2.setHttpOnly(true);
+        cookie2.setPath("/");
+        cookie2.setMaxAge(3600);
+        // Uncomment if using HTTPS
+        // cookie.setSecure(true);
+        response.addCookie(cookie2);
 
         yield "Login successful";
       }
@@ -70,17 +89,23 @@ public class AuthController {
   }
 
   @PostMapping("/refresh")
-  public String refresh(HttpServletResponse response) {
-    // Logic to refresh the authentication token
+  public String refresh(HttpServletRequest request, HttpServletResponse response) {
+    String token = jwtUtils.resolveToken(request);
+    String refreshToken = jwtUtils.resolveRefreshToken(request);
+    JwtData jwtData = jwtUtils.verifyToken(token, jwtSecret);
+    JwtData refreshData = jwtUtils.verifyToken(refreshToken, jwtSecretRefresh);
+    System.out.println(jwtData);
+    System.out.println(refreshData);
+    // TODO compare token at service layer to see if data from refresh token is
+    // valid
     String newToken = authService.refreshToken();
     Cookie cookie = new Cookie("token", newToken);
     cookie.setHttpOnly(true);
     cookie.setPath("/");
-    cookie.setMaxAge(60 * 60);
+    cookie.setMaxAge(3600);
     // Uncomment if using HTTPS
     // cookie.setSecure(true);
     response.addCookie(cookie);
-    response.setHeader("Authorization", "Bearer " + newToken);
 
     return "Token refreshed successfully";
   }
