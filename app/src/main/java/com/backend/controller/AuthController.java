@@ -22,7 +22,8 @@ import jakarta.servlet.http.HttpSession;
 @RestController
 public class AuthController {
 
-  private JwtUtils jwtUtils = new JwtUtils();
+  @Autowired
+  private JwtUtils jwtUtils;
 
   @Autowired
   private AuthService authService;

@@ -19,6 +19,7 @@ import com.backend.dto.JwtData;
 import com.backend.dto.auth.LoginResult;
 import com.backend.dto.auth.LoginStatus;
 import com.backend.dto.auth.RefreshResult;
+import com.backend.dto.auth.RefreshStatus;
 import com.backend.dto.auth.RegisterResult;
 import com.backend.dto.auth.RegisterStatus;
 import com.backend.model.Role;
@@ -102,7 +103,11 @@ public class AuthServiceImpl implements AuthService {
     JwtData refreshData = jwtUtils.verifyToken(refreshToken, jwtSecretRefresh);
     System.out.println(jwtData);
     System.out.println(refreshData);
+    if (jwtData.getUserId() != refreshData.getUserId()) {
+      return new RefreshResult(RefreshStatus.FAIL, null, null);
+    }
     // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'refreshToken'");
+    String newToken = jwtUtils.generateToken(jwtData.getUserId(), jwtData.getRoleIds(), jwtSecret, 60000L);
+    return new RefreshResult(RefreshStatus.SUCCESS, newToken, refreshToken);
   }
 }

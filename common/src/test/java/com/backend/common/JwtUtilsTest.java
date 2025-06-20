@@ -4,6 +4,7 @@ import com.backend.common.JwtUtils;
 import com.backend.dto.JwtData;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Arrays;
 import java.util.List;
@@ -12,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class JwtUtilsTest {
 
+  @Autowired
   private JwtUtils jwtUtils = new JwtUtils();
 
   private static final String SECRET_KEY = "mySuperSecretKeyForJwtTesting1234567890"; // should be at least 32 bytes for
