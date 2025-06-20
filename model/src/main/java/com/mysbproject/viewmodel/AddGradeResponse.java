@@ -1,8 +1,12 @@
 package com.mysbproject.viewmodel;
 
-import lombok.AllArgsConstructor;
+import lombok.Data;
 
-@AllArgsConstructor
+@Data
 public class AddGradeResponse {
   private String message;
+
+  public AddGradeResponse(String message) {
+    this.message = message;
+  }
 }

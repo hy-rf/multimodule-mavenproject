@@ -16,7 +16,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Grade {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,4 +23,8 @@ public class Grade {
 
   @Column(unique = true, length = 50, nullable = false)
   private String name;
+
+  public Grade(String name) {
+    this.name = name;
+  }
 }
