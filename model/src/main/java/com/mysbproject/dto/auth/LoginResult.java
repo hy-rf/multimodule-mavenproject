@@ -1,4 +1,4 @@
-package com.mysbproject.dto.Auth;
+package com.mysbproject.dto.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

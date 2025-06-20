@@ -1,4 +1,4 @@
-package com.mysbproject.dto.Auth;
+package com.mysbproject.dto.auth;
 
 public enum RegisterStatus {
   SUCCESS,

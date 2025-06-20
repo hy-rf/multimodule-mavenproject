@@ -11,11 +11,11 @@ import com.mysbproject.common.JwtUtils;
 import com.mysbproject.common.PasswordUtils;
 import com.mysbproject.repository.User.UserDao;
 import com.mysbproject.dto.JwtData;
-import com.mysbproject.dto.Auth.LoginResult;
-import com.mysbproject.dto.Auth.LoginStatus;
-import com.mysbproject.dto.Auth.RefreshResult;
-import com.mysbproject.dto.Auth.RegisterResult;
-import com.mysbproject.dto.Auth.RegisterStatus;
+import com.mysbproject.dto.auth.LoginResult;
+import com.mysbproject.dto.auth.LoginStatus;
+import com.mysbproject.dto.auth.RefreshResult;
+import com.mysbproject.dto.auth.RegisterResult;
+import com.mysbproject.dto.auth.RegisterStatus;
 import com.mysbproject.model.Role;
 import com.mysbproject.model.User;
 

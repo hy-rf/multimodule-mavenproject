@@ -1,8 +1,8 @@
 package com.mysbproject.service;
 
-import com.mysbproject.dto.Auth.LoginResult;
-import com.mysbproject.dto.Auth.RefreshResult;
-import com.mysbproject.dto.Auth.RegisterResult;
+import com.mysbproject.dto.auth.LoginResult;
+import com.mysbproject.dto.auth.RefreshResult;
+import com.mysbproject.dto.auth.RegisterResult;
 
 public interface AuthService {
   RegisterResult registerUser(String username, String password);
