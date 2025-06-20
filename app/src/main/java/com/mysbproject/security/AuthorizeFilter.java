@@ -3,15 +3,18 @@ package com.mysbproject.security;
 import java.io.IOException;
 import java.util.Collections;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.mysbproject.common.JwtUtils;
 import com.mysbproject.dto.JwtData;
+import com.mysbproject.service.CustomUserDetailsService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -31,6 +34,9 @@ public class AuthorizeFilter extends OncePerRequestFilter {
   private String jwtSecret;
 
   private JwtUtils jwtUtils = new JwtUtils();
+
+  @Autowired
+  private CustomUserDetailsService customUserDetailsService;
 
   // private static final List<String> EXCLUDED_PATHS = List.of("/", "/login",
   // "/register", "/refresh", "/home");
@@ -52,8 +58,8 @@ public class AuthorizeFilter extends OncePerRequestFilter {
     if (jwtData == null) {
       log.info("JWT Data is null, user is not logged in.");
     } else {
-      // Set authentication in the security context
-      UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(jwtData.getUserId(),
+      UserDetails userDetails = customUserDetailsService.loadUserById(jwtData.getUserId());
+      UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails,
           null, Collections.emptyList());
       SecurityContextHolder.getContext().setAuthentication(authentication);
     }

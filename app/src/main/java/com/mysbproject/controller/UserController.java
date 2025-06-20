@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,8 +37,11 @@ public class UserController {
   @PreAuthorize("isAuthenticated()")
   @GetMapping("/me")
   public Boolean getCurrentUser() {
+    UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
+        .getAuthentication().getPrincipal();
+    String name = userDetails.getUsername();
     Authentication p = SecurityContextHolder.getContext().getAuthentication();
-    System.out.println(p);
+    System.out.println(p + name);
     return p.isAuthenticated();
   }
 

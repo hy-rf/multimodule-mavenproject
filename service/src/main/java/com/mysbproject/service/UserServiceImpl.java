@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mysbproject.repository.UserRepository;
 import com.mysbproject.repository.User.UserDao;
 import com.mysbproject.common.PasswordUtils;
 import com.mysbproject.model.User;
@@ -15,6 +16,8 @@ import com.mysbproject.model.User;
 public class UserServiceImpl implements UserService {
   private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
 
+  @Autowired
+  UserRepository userRepository;
   @Autowired
   UserDao userDao;
   // Implement methods for user management, such as creating, updating, and
@@ -30,7 +33,7 @@ public class UserServiceImpl implements UserService {
   @Override
   public List<User> getAllUsers() {
     logger.info("Fetching all users from the database.");
-    return userDao.getAllUsers();
+    return userRepository.findAll();
   }
 
   @Override

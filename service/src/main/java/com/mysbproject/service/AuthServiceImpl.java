@@ -1,7 +1,11 @@
 package com.mysbproject.service;
 
-import java.util.Optional;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.mysbproject.common.JwtUtils;
 import com.mysbproject.common.PasswordUtils;
+import com.mysbproject.repository.UserRepository;
 import com.mysbproject.repository.User.UserDao;
 import com.mysbproject.dto.JwtData;
 import com.mysbproject.dto.auth.LoginResult;
@@ -27,6 +32,9 @@ public class AuthServiceImpl implements AuthService {
 
   @Value("${jwt.secret.refresh}")
   private String jwtSecretRefresh;
+
+  @Autowired
+  private UserRepository userRepository;
 
   @Autowired
   private UserDao userDao;
@@ -51,7 +59,7 @@ public class AuthServiceImpl implements AuthService {
 
   @Override
   public LoginResult loginUser(String username, String password) {
-    Optional<User> userOpt = userDao.findByUsername(username);
+    Optional<User> userOpt = userRepository.findByUsername(username);
     if (userOpt.isPresent() == false) {
       return new LoginResult("User not found", LoginStatus.USER_NOT_FOUND, null, null);
     }
@@ -64,10 +72,20 @@ public class AuthServiceImpl implements AuthService {
     // token
     System.out.println("User " + user.getUsername() + " logged in successfully.");
     Long userId = user.getId();
-    Set<Role> roles = user.getRoles();
-    String token = jwtUtils.generateToken(userId, roles.stream().map(Role::getId).toList(),
+    Set<Role> roles = user.getRoles() == null ? Collections.emptySet() : new HashSet<>(user.getRoles());
+    // 8. Extract role IDs from the roles set
+
+    // 8.1 Create a stream from the roles set
+    Stream<Role> roleStream = roles.stream();
+
+    // 8.2 Map each Role object to its ID
+    Stream<Long> roleIdStream = roleStream.map(Role::getId);
+
+    // 8.3 Collect the IDs into a List
+    List<Long> roleIds = roleIdStream.toList();
+    String token = jwtUtils.generateToken(userId, roleIds,
         jwtSecret, 60000L);
-    String refreshToken = jwtUtils.generateToken(userId, roles.stream().map(Role::getId).toList(),
+    String refreshToken = jwtUtils.generateToken(userId, roleIds,
         jwtSecretRefresh, 3600000L);
     // TODO add token to redis
     return new LoginResult("Login successful", LoginStatus.SUCCESS, token, refreshToken);
