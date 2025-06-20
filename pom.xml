@@ -21,7 +21,7 @@
         <relativePath /> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>com.mysbproject</groupId>
+    <groupId>com.backend</groupId>
     <artifactId>sbp</artifactId>
     <version>0.0.1</version>
     <name>sbp</name>
@@ -131,7 +131,7 @@
         <!--                    <artifactId>spring-boot-maven-plugin</artifactId>-->
         <!--                    <version>3.5.0</version>-->
         <!--                    <configuration>-->
-        <!--                        <mainClass>com.mysbproject.Application</mainClass>-->
+        <!--                        <mainClass>com.backend.Application</mainClass>-->
         <!--                    </configuration>-->
         <!--                </plugin>-->
         <!--            </plugins>-->
