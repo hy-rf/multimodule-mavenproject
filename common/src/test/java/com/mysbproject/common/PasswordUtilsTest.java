@@ -2,8 +2,6 @@ package com.mysbproject.common;
 
 import org.junit.jupiter.api.Test;
 
-import com.mysbproject.common.PasswordUtils;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class PasswordUtilsTest {
