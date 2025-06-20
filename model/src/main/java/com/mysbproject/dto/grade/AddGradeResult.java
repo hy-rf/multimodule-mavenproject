@@ -1,11 +1,11 @@
 package com.mysbproject.dto.grade;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor
 public class AddGradeResult {
-    public AddGradeResult(String message){
-        this.message = message;
-    }
-    String message;
+
+    private String message;
 }
