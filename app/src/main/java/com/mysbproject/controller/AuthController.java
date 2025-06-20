@@ -59,21 +59,21 @@ public class AuthController {
     return switch (result.getStatus()) {
       case SUCCESS -> {
         String token = result.getToken();
-        Cookie cookie = new Cookie("token", token);
-        cookie.setHttpOnly(true);
-        cookie.setPath("/");
-        cookie.setMaxAge(3600);
+        Cookie tokenCookie = new Cookie("token", token);
+        tokenCookie.setHttpOnly(true);
+        tokenCookie.setPath("/");
+        tokenCookie.setMaxAge(3600);
         // Uncomment if using HTTPS
         // cookie.setSecure(true);
-        response.addCookie(cookie);
+        response.addCookie(tokenCookie);
         String refreshToken = result.getRefresh();
-        Cookie cookie2 = new Cookie("refresh", refreshToken);
-        cookie2.setHttpOnly(true);
-        cookie2.setPath("/");
-        cookie2.setMaxAge(3600);
+        Cookie refreshTokenCookie = new Cookie("refresh", refreshToken);
+        refreshTokenCookie.setHttpOnly(true);
+        refreshTokenCookie.setPath("/");
+        refreshTokenCookie.setMaxAge(3600);
         // Uncomment if using HTTPS
         // cookie.setSecure(true);
-        response.addCookie(cookie2);
+        response.addCookie(refreshTokenCookie);
 
         yield "Login successful";
       }
