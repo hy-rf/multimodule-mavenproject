@@ -11,7 +11,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "roles")
@@ -27,5 +33,6 @@ public class Role {
   private String name;
 
   @ManyToMany(mappedBy = "roles")
-  private Set<User> users;
+  @JsonBackReference
+  private List<User> users = new ArrayList<>();
 }

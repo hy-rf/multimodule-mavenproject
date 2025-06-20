@@ -72,7 +72,7 @@ public class AuthServiceImpl implements AuthService {
     // token
     System.out.println("User " + user.getUsername() + " logged in successfully.");
     Long userId = user.getId();
-    Set<Role> roles = user.getRoles();
+    List<Role> roles = user.getRoles();
     // 8. Extract role IDs from the roles set
 
     // 8.1 Create a stream from the roles set
@@ -82,10 +82,10 @@ public class AuthServiceImpl implements AuthService {
     Stream<Long> roleIdStream = roleStream.map(Role::getId);
 
     // 8.3 Collect the IDs into a List
-    // List<Long> roleIds = roleIdStream.toList();
-    String token = jwtUtils.generateToken(userId, Collections.emptyList(),
+    List<Long> roleIds = roleIdStream.toList();
+    String token = jwtUtils.generateToken(userId, roleIds,
         jwtSecret, 60000L);
-    String refreshToken = jwtUtils.generateToken(userId, Collections.emptyList(),
+    String refreshToken = jwtUtils.generateToken(userId, roleIds,
         jwtSecretRefresh, 3600000L);
     // TODO add token to redis
     return new LoginResult("Login successful", LoginStatus.SUCCESS, token, refreshToken);

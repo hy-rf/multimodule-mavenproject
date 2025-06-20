@@ -27,11 +27,12 @@ public class UserController {
     return "User information retrieved successfully";
   }
 
-  // @PreAuthorize("isAuthenticated()")
+  @PreAuthorize("hasRole('admin')")
   @GetMapping("/users")
   public List<User> getAllUsers() {
     // Logic to retrieve all users
-    return userService.getAllUsers();
+    List<User> user = userService.getAllUsers();
+    return user;
   }
 
   @PreAuthorize("isAuthenticated()")

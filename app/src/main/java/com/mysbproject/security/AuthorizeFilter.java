@@ -60,7 +60,7 @@ public class AuthorizeFilter extends OncePerRequestFilter {
     } else {
       UserDetails userDetails = customUserDetailsService.loadUserById(jwtData.getUserId());
       UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails,
-          null, Collections.emptyList());
+          null, userDetails.getAuthorities());
       SecurityContextHolder.getContext().setAuthentication(authentication);
     }
     filterChain.doFilter(request, response);
