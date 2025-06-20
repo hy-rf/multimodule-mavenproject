@@ -41,17 +41,16 @@ public class SecurityConfig {
         .formLogin(form -> form.disable())
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
-    // http.addFilterBefore(authorizeFilter,
-    // UsernamePasswordAuthenticationFilter.class);
+    http.addFilterBefore(authorizeFilter, UsernamePasswordAuthenticationFilter.class);
     return http.build();
   }
 
   @Bean
   public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
     AuthenticationManagerBuilder builder = http.getSharedObject(AuthenticationManagerBuilder.class);
-    builder
-        .userDetailsService(customUserDetailsService)
-        .passwordEncoder(passwordEncoder());
+    // builder
+    // .userDetailsService(customUserDetailsService)
+    // .passwordEncoder(passwordEncoder());
     return builder.build();
   }
 

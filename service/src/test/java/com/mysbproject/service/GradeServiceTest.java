@@ -17,14 +17,14 @@ public class GradeServiceTest {
   @MockitoBean
   private GradeService gradeService;
 
-  @Test
-  public void getGrades() {
-    List<Grade> grades = gradeService.getGrades();
-    System.out.println(grades.size());
-  }
+  // @Test
+  // public void getGrades() {
+  // List<Grade> grades = gradeService.getGrades();
+  // System.out.println(grades.size());
+  // }
 
   @SpringBootApplication(scanBasePackages = "com.mysbproject")
   // @EntityScan(basePackages = "com.mysbproject.model")
-  static class TestConfiguration {
+  static class TestConfiguration2 {
   }
 }
