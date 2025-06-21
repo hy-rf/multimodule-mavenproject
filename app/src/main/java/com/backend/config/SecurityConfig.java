@@ -13,7 +13,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.backend.common.security.PBKDF2PasswordEncoder;
-import com.backend.security.AuthorizeFilter;
+import com.backend.security.AuthorizationFilter;
 import com.backend.service.CustomUserDetailsService;
 
 @EnableMethodSecurity
@@ -21,7 +21,7 @@ import com.backend.service.CustomUserDetailsService;
 public class SecurityConfig {
 
   @Autowired
-  private AuthorizeFilter authorizeFilter;
+  private AuthorizationFilter authorizationFilter;
 
   @Autowired
   private CustomUserDetailsService customUserDetailsService;
@@ -41,7 +41,7 @@ public class SecurityConfig {
         .formLogin(form -> form.disable())
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
-    http.addFilterBefore(authorizeFilter, UsernamePasswordAuthenticationFilter.class);
+    http.addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class);
     return http.build();
   }
 

@@ -9,7 +9,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import com.backend.model.Grade;
-import com.backend.service.GradeService;
 
 @ActiveProfiles("test")
 @SpringBootTest
@@ -20,8 +19,12 @@ public class GradeServiceTest {
 
   // @Test
   // public void getGrades() {
+  // try {
   // List<Grade> grades = gradeService.getGrades();
   // System.out.println(grades.size());
+  // } catch (Exception e) {
+  // e.printStackTrace();
+  // }
   // }
 
   @SpringBootApplication(scanBasePackages = "com.backend")

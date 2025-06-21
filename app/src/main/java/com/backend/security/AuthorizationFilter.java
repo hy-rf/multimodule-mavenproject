@@ -27,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 */
 @Component
 @Slf4j
-public class AuthorizeFilter extends OncePerRequestFilter {
+public class AuthorizationFilter extends OncePerRequestFilter {
 
   @Value("${jwt.secret}")
   private String jwtSecret;
