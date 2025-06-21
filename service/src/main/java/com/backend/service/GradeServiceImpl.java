@@ -22,7 +22,7 @@ public class GradeServiceImpl implements GradeService {
 
   @Override
   public AddGradeResult addGrade(String name) {
-    Grade newGrade = new Grade(name);
+    Grade newGrade = new Grade(null, name);
     gradeRepository.save(newGrade);
     return new AddGradeResult("Success");
   }
