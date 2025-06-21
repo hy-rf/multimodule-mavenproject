@@ -39,12 +39,10 @@ public class UserDaoImpl implements UserDao {
 
   @Override
   @Transactional
-  public void saveExampleUser(String passwordHash) {
+  public void saveExampleUser(String userName, String passwordHash) {
     User user = new User();
-    user.setUsername("testuser2");
-    user.setEmail("testuser2@example.com");
+    user.setUsername(userName);
     user.setPasswordHash(passwordHash);
-    user.setFullName("Test2 User");
     user.setIsActive(true);
     user.setEmailVerified(false);
     user.setTwoFactorEnabled(false);

@@ -42,9 +42,9 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public void saveExampleUser() {
-    String hash = PasswordUtils.hashPassword("hashedpassword"); // Replace with actual password hashing logic
-    userDao.saveExampleUser(hash);
+  public void saveExampleUser(String userName, String password) {
+    String hash = PasswordUtils.hashPassword(password);
+    userDao.saveExampleUser(userName, hash);
   }
 
   // Additional methods can be added here for user-related operations.

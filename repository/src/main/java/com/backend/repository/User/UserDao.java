@@ -12,7 +12,7 @@ public interface UserDao {
 
   void saveUser(User user);
 
-  void saveExampleUser(String passwordHash);
+  void saveExampleUser(String userName, String passwordHash);
 
   List<User> getUsers(String filterField, String filterValue, String sortField, boolean ascending);
 

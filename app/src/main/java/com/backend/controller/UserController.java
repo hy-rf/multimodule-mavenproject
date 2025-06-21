@@ -9,21 +9,24 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.model.User;
 import com.backend.service.UserService;
+import com.backend.viewmodel.LoginRequest;
 
 @RestController
 public class UserController {
   @Autowired
   private UserService userService;
 
-  @PreAuthorize("hasRole('ADMIN')")
-  @GetMapping("/example-user")
-  public String saveExampleUser() {
-    // Logic to retrieve user information
-    userService.saveExampleUser();
+  @PreAuthorize("hasRole('admin')")
+  @PostMapping("/test-user")
+  public String saveExampleUser(@RequestBody LoginRequest loginRequest) {
+    System.out.println(loginRequest);
+    userService.saveExampleUser(loginRequest.getUsername(), loginRequest.getPassword());
     return "User information retrieved successfully";
   }
 

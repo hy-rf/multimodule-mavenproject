@@ -9,5 +9,5 @@ public interface UserService {
 
   User getUserById(Long id);
 
-  void saveExampleUser();
+  void saveExampleUser(String userName, String password);
 }
