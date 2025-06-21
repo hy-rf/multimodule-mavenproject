@@ -13,6 +13,7 @@ import com.backend.common.JwtUtils;
 import com.backend.service.CustomUserDetailsService;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ActiveProfiles("test")
 @WebMvcTest(HomeController.class)
@@ -30,11 +31,11 @@ public class HomeControllerTest {
   @Test
   @WithMockUser
   public void testHomePage() throws Exception {
-    mockMvc.perform(get("/"));
+    mockMvc.perform(get("/home")).andExpect(status().isOk());
   }
 
-  @SpringBootApplication(scanBasePackages = "com.backend")
-  static class TestConfiguration {
-  }
+  // @SpringBootApplication(scanBasePackages = "com.backend")
+  // static class TestConfiguration {
+  // }
 
 }
