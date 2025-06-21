@@ -4,7 +4,7 @@ WORKDIR /app
 COPY . .
 RUN chmod +x ./mvnw
 RUN ls
-RUN ./mvnw clean package -DskipTests
+RUN ./mvnw clean package
 
 # Run stage
 FROM eclipse-temurin:21-jre
