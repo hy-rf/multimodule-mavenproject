@@ -1,37 +1,44 @@
 package com.backend.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import com.backend.model.Grade;
+import com.backend.repository.GradeRepository;
 
-@ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
-@SpringBootTest
 public class GradeServiceTest {
 
+  @InjectMocks
+  private GradeService gradeService = new GradeServiceImpl();
+
   @Mock
-  private GradeService gradeService;
+  private GradeRepository gradeRepository;
 
-  // @Test
-  // public void getGrades() {
-  // try {
-  // List<Grade> grades = gradeService.getGrades();
-  // System.out.println(grades.size());
-  // } catch (Exception e) {
-  // e.printStackTrace();
-  // }
-  // }
+  @BeforeEach
+  public void setup() {
+    List<Grade> mock = new ArrayList<Grade>();
+    mock.add(new Grade((long) 1, "1"));
+    when(gradeRepository.findAll()).thenReturn(mock);
+  }
 
-  @SpringBootApplication(scanBasePackages = "com.backend")
-  // @EntityScan(basePackages = "com.backend.model")
-  static class TestConfiguration {
+  @Test
+  public void getGrades() {
+
+    List<Grade> grades = gradeService.getGrades();
+    assertEquals(1, grades.size());
+    assertEquals(1, grades.get(0).getId());
+    assertEquals("1", grades.get(0).getName());
   }
 }
