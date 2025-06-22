@@ -9,25 +9,29 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.backend.common.security.PBKDF2PasswordEncoder;
 import com.backend.security.AuthorizationFilter;
+import com.backend.security.JwtAuthenticationEntryPoint;
 import com.backend.service.CustomUserDetailsService;
+
+import lombok.RequiredArgsConstructor;
 
 @EnableMethodSecurity
 @Configuration
+@RequiredArgsConstructor
 public class SecurityConfig {
 
-  @Autowired
-  private AuthorizationFilter authorizationFilter;
+  private final AuthorizationFilter authorizationFilter;
 
-  @Autowired
-  private CustomUserDetailsService customUserDetailsService;
+  private final CustomUserDetailsService customUserDetailsService;
 
-  @Autowired
-  private Environment env;
+  private final Environment env;
+
+  private final JwtAuthenticationEntryPoint unauthorizedHandler;
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -42,6 +46,7 @@ public class SecurityConfig {
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
     http.addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class);
+    http.exceptionHandling(handler -> handler.authenticationEntryPoint(unauthorizedHandler));
     return http.build();
   }
 
@@ -55,7 +60,7 @@ public class SecurityConfig {
   }
 
   @Bean
-  public PBKDF2PasswordEncoder passwordEncoder() {
-    return new PBKDF2PasswordEncoder();
+  public BCryptPasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
   }
 }
