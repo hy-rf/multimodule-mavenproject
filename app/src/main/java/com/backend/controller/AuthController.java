@@ -13,11 +13,14 @@ import com.backend.dto.auth.RegisterResult;
 import com.backend.service.AuthService;
 import com.backend.service.LoginRateLimiterService;
 import com.backend.viewmodel.LoginRequest;
+import com.backend.viewmodel.RegisterRequest;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 
 @RestController
 public class AuthController {
@@ -31,13 +34,9 @@ public class AuthController {
   @Autowired
   private LoginRateLimiterService loginRateLimiterService;
 
-  public static class RegisterRequest {
-    public String username;
-    public String password;
-  }
-
   @PostMapping("/register")
-  public String signup(@RequestBody RegisterRequest registerRequest, HttpSession session,
+  @Operation(summary = "Register")
+  public String signup(@Valid @RequestBody RegisterRequest registerRequest, HttpSession session,
       HttpServletResponse response) {
     RegisterResult result = authService.registerUser(registerRequest.username, registerRequest.password);
     return switch (result.getStatus()) {
@@ -50,6 +49,7 @@ public class AuthController {
   }
 
   @PostMapping("/login")
+  @Operation(summary = "Login as user")
   public String login(@RequestBody LoginRequest loginRequest, HttpSession session, HttpServletResponse response) {
     if (!loginRateLimiterService.isAllowed(loginRequest.getUsername())) {
       return "Too many login attempts. Please try again later.";
