@@ -10,6 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,9 +32,11 @@ public class User {
     private Long id;
 
     @Column(unique = true, length = 50)
+    @NotBlank(message = "Username must not be blank")
     private String username;
 
     @Column(unique = true, length = 100)
+    @NotBlank(message = "Password must not be blank")
     private String email;
 
     @Column(name = "password_hash", length = 255)
