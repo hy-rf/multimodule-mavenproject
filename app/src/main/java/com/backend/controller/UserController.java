@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.model.User;
 import com.backend.service.UserService;
+import com.backend.viewmodel.CurrentUserResponse;
 import com.backend.viewmodel.LoginRequest;
 import com.backend.viewmodel.UpdateUserRequest;
 import com.backend.viewmodel.UpdateUserResult;
@@ -47,13 +48,14 @@ public class UserController {
 
   @PreAuthorize("isAuthenticated()")
   @GetMapping("/me")
-  public Boolean getCurrentUser() {
-    UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
-        .getAuthentication().getPrincipal();
-    String name = userDetails.getUsername();
-    Authentication p = SecurityContextHolder.getContext().getAuthentication();
-    System.out.println(p + name);
-    return p.isAuthenticated();
+  public CurrentUserResponse getCurrentUser() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    String username = authentication.getName();
+    List<String> roles = authentication.getAuthorities()
+        .stream()
+        .map(auth -> auth.getAuthority())
+        .toList();
+    return new CurrentUserResponse(username, roles);
   }
 
   @PreAuthorize("hasRole('admin')")
