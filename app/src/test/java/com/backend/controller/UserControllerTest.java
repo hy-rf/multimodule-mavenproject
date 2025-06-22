@@ -15,7 +15,7 @@ import com.backend.common.JwtUtils;
 import com.backend.service.CustomUserDetailsService;
 
 @ActiveProfiles("test")
-@WebMvcTest(HomeController.class)
+@WebMvcTest(UserControllerTest.class)
 public class UserControllerTest {
   @Autowired
   private MockMvc mockMvc;
@@ -28,7 +28,7 @@ public class UserControllerTest {
 
   @Test
   @WithMockUser(roles = "admin")
-  public void testHomePage() throws Exception {
-    // mockMvc.perform(get("/users")).andExpect(status().isOk());
+  public void testUsersEndpoint() throws Exception {
+    mockMvc.perform(get("/users"));
   }
 }

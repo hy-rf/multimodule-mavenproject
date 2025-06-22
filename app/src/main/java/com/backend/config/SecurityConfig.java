@@ -1,6 +1,5 @@
 package com.backend.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -13,7 +12,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.backend.common.security.PBKDF2PasswordEncoder;
 import com.backend.security.AuthorizationFilter;
 import com.backend.security.JwtAuthenticationEntryPoint;
 import com.backend.service.CustomUserDetailsService;
@@ -38,9 +36,10 @@ public class SecurityConfig {
     boolean isDev = java.util.Arrays.asList(env.getActiveProfiles()).contains("dev");
     http
         .csrf(csrf -> {
-          // if (isDev) {
-          csrf.disable();
-          // }
+          if (isDev)
+            csrf.disable();
+          else
+            csrf.disable();
         })
         .formLogin(form -> form.disable())
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

@@ -2,8 +2,6 @@ package com.backend.common;
 
 import org.junit.jupiter.api.Test;
 
-import com.backend.common.PasswordUtils;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class PasswordUtilsTest {

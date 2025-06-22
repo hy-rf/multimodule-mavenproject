@@ -1,6 +1,5 @@
 package com.backend.common;
 
-import com.backend.common.JwtUtils;
 import com.backend.dto.JwtData;
 
 import org.junit.jupiter.api.Test;
