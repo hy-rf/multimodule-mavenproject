@@ -34,9 +34,9 @@ public class SecurityConfig {
     boolean isDev = java.util.Arrays.asList(env.getActiveProfiles()).contains("dev");
     http
         .csrf(csrf -> {
-          if (isDev) {
-            csrf.disable();
-          }
+          // if (isDev) {
+          csrf.disable();
+          // }
         })
         .formLogin(form -> form.disable())
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

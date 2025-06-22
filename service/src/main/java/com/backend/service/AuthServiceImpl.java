@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import com.backend.common.JwtUtils;
 import com.backend.common.PasswordUtils;
 import com.backend.repository.UserRepository;
-import com.backend.repository.User.UserDao;
 import com.backend.dto.JwtData;
 import com.backend.dto.auth.LoginResult;
 import com.backend.dto.auth.LoginStatus;
@@ -38,14 +37,11 @@ public class AuthServiceImpl implements AuthService {
   private UserRepository userRepository;
 
   @Autowired
-  private UserDao userDao;
-
-  @Autowired
   private JwtUtils jwtUtils;
 
   @Override
   public RegisterResult registerUser(String username, String password) {
-    if (userDao.findByUsername(username).isPresent()) {
+    if (userRepository.findByUsername(username).isPresent()) {
       return new RegisterResult(RegisterStatus.USERNAME_TAKEN);
     }
     String hash = PasswordUtils.hashPassword(password);
@@ -54,7 +50,7 @@ public class AuthServiceImpl implements AuthService {
     user.setUsername(username);
     user.setPasswordHash(hash);
 
-    userDao.saveUser(user);
+    userRepository.save(user);
     return new RegisterResult(RegisterStatus.SUCCESS);
   }
 

@@ -2,7 +2,7 @@ package com.backend.service;
 
 import com.backend.model.User;
 import com.backend.model.Role;
-import com.backend.repository.User.UserDao;
+import com.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,11 +16,11 @@ import java.util.stream.Collectors;
 public class CustomUserDetailsService implements UserDetailsService {
 
         @Autowired
-        private UserDao userDao;
+        private UserRepository userRepository;
 
         @Override
         public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                User user = userDao.findByUsername(username)
+                User user = userRepository.findByUsername(username)
                                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
 
                 return org.springframework.security.core.userdetails.User.builder()
@@ -38,7 +38,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
 
         public UserDetails loadUserById(Long id) {
-                User user = userDao.getUserById(id);
+                User user = userRepository.findById(id).get();
                 if (user == null)
                         throw new UsernameNotFoundException("User not found: " + id);
                 return org.springframework.security.core.userdetails.User.builder()
