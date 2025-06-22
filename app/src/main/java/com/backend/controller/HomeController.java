@@ -24,4 +24,14 @@ public class HomeController {
         logger.info("Home endpoint accessed");
         return title;
     }
+
+    @GetMapping("/")
+    @PreAuthorize("permitAll()")
+    public void index(HttpServletResponse response) {
+        try {
+            response.sendRedirect("/swagger-ui.html");
+        } catch (Exception e) {
+            logger.error("Redirect failed", e);
+        }
+    }
 }
