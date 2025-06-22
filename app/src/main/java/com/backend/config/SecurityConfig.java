@@ -35,12 +35,7 @@ public class SecurityConfig {
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     boolean isDev = java.util.Arrays.asList(env.getActiveProfiles()).contains("dev");
     http
-        .csrf(csrf -> {
-          if (isDev)
-            csrf.disable();
-          else
-            csrf.disable();
-        })
+        .csrf(csrf -> csrf.disable())
         .formLogin(form -> form.disable())
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
