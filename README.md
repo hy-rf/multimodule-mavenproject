@@ -1,5 +1,9 @@
 # Its my multi-module maven sample project.
 
+### Prerequisite
+
+1. JDK 21
+
 ### How to run
 
 1. Fill your config files in `app` module.
