@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.backend.repository.UserRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
 import com.backend.common.PasswordUtils;
@@ -47,6 +48,12 @@ public class UserServiceImpl implements UserService {
     exUser.setUsername(userName);
     exUser.setPasswordHash(hash);
     userRepository.save(exUser);
+  }
+
+  @Override
+  @Transactional
+  public void updateUser(User user) {
+    userRepository.save(user);
   }
 
   // Additional methods can be added here for user-related operations.

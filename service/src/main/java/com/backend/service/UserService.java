@@ -10,4 +10,6 @@ public interface UserService {
   User getUserById(Long id);
 
   void saveExampleUser(String userName, String password);
+
+  void updateUser(User user);
 }
