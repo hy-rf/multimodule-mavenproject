@@ -68,8 +68,32 @@ public class UserController {
 
   @PreAuthorize("hasRole('admin')")
   @PutMapping("/user")
-  public ResponseEntity<UpdateUserResult> updateUser(@Valid @RequestBody UpdateUserRequest UpdateUserRequest) {
+  public ResponseEntity<UpdateUserResult> updateUser(@Valid @RequestBody UpdateUserRequest updateUserRequest) {
+    User user = userService.getUserById(updateUserRequest.getId().longValue());
+
+    if (updateUserRequest.getUsername() != null)
+      user.setUsername(updateUserRequest.getUsername());
+    if (updateUserRequest.getEmail() != null)
+      user.setEmail(updateUserRequest.getEmail());
+    if (updateUserRequest.getPasswordHash() != null)
+      user.setPasswordHash(updateUserRequest.getPasswordHash());
+    if (updateUserRequest.getFullName() != null)
+      user.setFullName(updateUserRequest.getFullName());
+    if (updateUserRequest.getIsActive() != null)
+      user.setIsActive(updateUserRequest.getIsActive());
+    if (updateUserRequest.getEmailVerified() != null)
+      user.setEmailVerified(updateUserRequest.getEmailVerified());
+    if (updateUserRequest.getTwoFactorEnabled() != null)
+      user.setTwoFactorEnabled(updateUserRequest.getTwoFactorEnabled());
+    if (updateUserRequest.getTwoFactorSecret() != null)
+      user.setTwoFactorSecret(updateUserRequest.getTwoFactorSecret());
+    if (updateUserRequest.getCreatedAt() != null)
+      user.setCreatedAt(updateUserRequest.getCreatedAt());
+    if (updateUserRequest.getUpdatedAt() != null)
+      user.setUpdatedAt(updateUserRequest.getUpdatedAt());
+
+    userService.updateUser(user);
     UpdateUserResult result = new UpdateUserResult("success");
-    return new ResponseEntity<UpdateUserResult>(result, HttpStatusCode.valueOf(200));
+    return new ResponseEntity<>(result, HttpStatusCode.valueOf(200));
   }
 }
