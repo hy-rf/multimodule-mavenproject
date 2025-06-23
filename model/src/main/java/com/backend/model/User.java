@@ -32,11 +32,9 @@ public class User {
     private Long id;
 
     @Column(unique = true, length = 50)
-    @NotBlank(message = "Username must not be blank")
     private String username;
 
     @Column(unique = true, length = 100)
-    @NotBlank(message = "Password must not be blank")
     private String email;
 
     @Column(name = "password_hash", length = 255)
