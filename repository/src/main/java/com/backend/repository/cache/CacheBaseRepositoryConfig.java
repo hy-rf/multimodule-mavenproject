@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class CacheBaseRepositoryConfig {
   @Bean
-  public CacheBaseRepository cacheBaseRepository(StringRedisTemplate redisTemplate) {
+  public CacheBaseRepository<String, String> cacheBaseRepository(StringRedisTemplate redisTemplate) {
     try {
       // Try a simple Redis command to check connectivity
       redisTemplate.opsForValue().get("health_check");

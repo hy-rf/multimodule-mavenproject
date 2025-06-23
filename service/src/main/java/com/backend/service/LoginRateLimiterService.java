@@ -1,8 +1,28 @@
 package com.backend.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.backend.repository.cache.CacheBaseRepository;
+
+import java.time.Duration;
+
 @Service
-public interface LoginRateLimiterService {
-  boolean isAllowed(String username);
+public class LoginRateLimiterService {
+
+    @Autowired
+    CacheBaseRepository<String, String> cacheBaseRepository;
+
+    public boolean isAllowed(String username) {
+        String key = "login_attempts:" + username;
+        int maxAttempts = 10;
+        Duration window = Duration.ofMinutes(10);
+        ;
+
+        Long attempts = cacheBaseRepository.increment(key);
+        if (attempts == 1) {
+            cacheBaseRepository.expire(key, window);
+        }
+        return attempts <= maxAttempts;
+    }
 }
