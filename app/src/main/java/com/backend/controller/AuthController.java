@@ -1,6 +1,7 @@
 package com.backend.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -62,6 +63,8 @@ public class AuthController {
         tokenCookie.setHttpOnly(true);
         tokenCookie.setPath("/");
         tokenCookie.setMaxAge(3600);
+        // tokenCookie.setDomain("localhost");
+        tokenCookie.setAttribute("SameSite", "None");
         // Uncomment if using HTTPS
         // cookie.setSecure(true);
         response.addCookie(tokenCookie);
@@ -70,6 +73,8 @@ public class AuthController {
         refreshTokenCookie.setHttpOnly(true);
         refreshTokenCookie.setPath("/");
         refreshTokenCookie.setMaxAge(3600);
+        // tokenCookie.setDomain("localhost");
+        refreshTokenCookie.setAttribute("SameSite", "None");
         // Uncomment if using HTTPS
         // cookie.setSecure(true);
         response.addCookie(refreshTokenCookie);
@@ -83,7 +88,7 @@ public class AuthController {
     };
   }
 
-  @PostMapping("/refresh")
+  @GetMapping("/refresh")
   public String refresh(HttpServletRequest request, HttpServletResponse response) {
     String token = jwtUtils.resolveToken(request);
     String refreshToken = jwtUtils.resolveRefreshToken(request);

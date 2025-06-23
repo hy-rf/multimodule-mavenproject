@@ -92,15 +92,8 @@ public class AuthServiceImpl implements AuthService {
 
   @Override
   public RefreshResult refreshToken(String token, String refreshToken) {
-    JwtData jwtData = jwtUtils.verifyToken(token, jwtSecret);
     JwtData refreshData = jwtUtils.verifyToken(refreshToken, jwtSecretRefresh);
-    System.out.println(jwtData);
-    System.out.println(refreshData);
-    if (jwtData.getUserId() != refreshData.getUserId()) {
-      return new RefreshResult(RefreshStatus.FAIL, null, null);
-    }
-    // TODO Auto-generated method stub
-    String newToken = jwtUtils.generateToken(jwtData.getUserId(), jwtData.getRoleIds(), jwtSecret, 60000L);
+    String newToken = jwtUtils.generateToken(refreshData.getUserId(), refreshData.getRoleIds(), jwtSecret, 60000L);
     return new RefreshResult(RefreshStatus.SUCCESS, newToken, refreshToken);
   }
 }
