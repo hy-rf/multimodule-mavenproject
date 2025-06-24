@@ -1,6 +1,6 @@
 PRAGMA foreign_keys = ON;
 
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT UNIQUE,
     email TEXT UNIQUE,
@@ -14,12 +14,12 @@ CREATE TABLE users (
     updated_at TEXT DEFAULT (datetime('now'))
 );
 
-CREATE TABLE roles (
+CREATE TABLE IF NOT EXISTS roles (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT UNIQUE NOT NULL
 );
 
-CREATE TABLE user_roles (
+CREATE TABLE IF NOT EXISTS user_roles (
     user_id INTEGER NOT NULL,
     role_id INTEGER NOT NULL,
     PRIMARY KEY (user_id, role_id),
@@ -27,19 +27,19 @@ CREATE TABLE user_roles (
     FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE
 );
 
-CREATE TABLE grades (
+CREATE TABLE IF NOT EXISTS grades (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT UNIQUE NOT NULL
 );
 
-CREATE TABLE classes (
+CREATE TABLE IF NOT EXISTS classes (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     grade_id INTEGER NOT NULL,
     FOREIGN KEY (grade_id) REFERENCES grades(id) ON DELETE CASCADE
 );
 
-CREATE TABLE students (
+CREATE TABLE IF NOT EXISTS students (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER,
     grade_id INTEGER NOT NULL,
@@ -47,7 +47,7 @@ CREATE TABLE students (
     FOREIGN KEY (grade_id) REFERENCES grades(id) ON DELETE CASCADE
 );
 
-CREATE TABLE student_classes (
+CREATE TABLE IF NOT EXISTS student_classes (
     student_id INTEGER NOT NULL,
     class_id INTEGER NOT NULL,
     PRIMARY KEY (student_id, class_id),
@@ -55,13 +55,13 @@ CREATE TABLE student_classes (
     FOREIGN KEY (class_id) REFERENCES classes(id) ON DELETE CASCADE
 );
 
-CREATE TABLE teachers (
+CREATE TABLE IF NOT EXISTS teachers (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
-CREATE TABLE teacher_classes (
+CREATE TABLE IF NOT EXISTS teacher_classes (
     teacher_id INTEGER NOT NULL,
     class_id INTEGER NOT NULL,
     PRIMARY KEY (teacher_id, class_id),
