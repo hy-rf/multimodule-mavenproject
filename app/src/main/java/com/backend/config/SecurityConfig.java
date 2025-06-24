@@ -38,6 +38,7 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     boolean isDev = java.util.Arrays.asList(env.getActiveProfiles()).contains("dev");
+    System.out.println(isDev);
     http
         .csrf(csrf -> csrf.disable())
         .formLogin(form -> form.disable())

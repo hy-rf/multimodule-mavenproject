@@ -1,8 +1,8 @@
 package com.backend.controller;
 
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 
-@SpringBootTest
+@WebMvcTest(AuthController.class)
 public class AuthControllerTest {
 
 }

@@ -1,9 +1,7 @@
 package com.backend.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.io.ByteArrayOutputStream;
@@ -12,7 +10,7 @@ import java.io.PrintStream;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
-@SpringBootTest
+@DataJpaTest
 class GetDatabaseTest {
 
   @Autowired
@@ -39,10 +37,5 @@ class GetDatabaseTest {
     } catch (Exception e) {
       e.printStackTrace();
     }
-  }
-
-  @SpringBootApplication(scanBasePackages = "com.backend")
-  @EntityScan(basePackages = "com.backend.model")
-  static class TestConfiguration {
   }
 }
