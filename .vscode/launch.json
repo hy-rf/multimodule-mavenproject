@@ -16,7 +16,7 @@
         "spring-boot:run"
       ],
       "port": 8080,
-      "preLaunchTask": "Maven Clean Install",
+      "preLaunchTask": "Maven Clean Compile",
       "env": {
         "SPRING_PROFILES_ACTIVE": "dev"
       }

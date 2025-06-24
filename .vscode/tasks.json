@@ -2,9 +2,9 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Maven Clean Install",
+      "label": "Maven Clean Compile",
       "type": "shell",
-      "command": "./mvnw clean install",
+      "command": "./mvnw clean compile",
       "group": {
         "kind": "build",
         "isDefault": true
