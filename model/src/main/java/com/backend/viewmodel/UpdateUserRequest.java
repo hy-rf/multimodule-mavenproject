@@ -14,7 +14,7 @@ public class UpdateUserRequest {
 
   private String email;
 
-  private String passwordHash;
+  private String password;
 
   private String fullName;
 

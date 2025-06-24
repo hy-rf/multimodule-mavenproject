@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.backend.common.PasswordUtils;
 import com.backend.model.User;
 import com.backend.service.UserService;
 import com.backend.viewmodel.CurrentUserResponse;
@@ -75,17 +76,27 @@ public class UserController {
     return userService.getUserById(id.longValue());
   }
 
+  /**
+   * Updates a user based on the provided UpdateUserRequest.
+   * Only accessible by users with the 'admin' role.
+   * 
+   * @param updateUserRequest
+   * @return
+   */
   @PreAuthorize("hasRole('admin')")
   @PutMapping("/user")
   public ResponseEntity<UpdateUserResult> updateUser(@Valid @RequestBody UpdateUserRequest updateUserRequest) {
     User user = userService.getUserById(updateUserRequest.getId().longValue());
-
     if (updateUserRequest.getUsername() != null)
       user.setUsername(updateUserRequest.getUsername());
     if (updateUserRequest.getEmail() != null)
       user.setEmail(updateUserRequest.getEmail());
-    if (updateUserRequest.getPasswordHash() != null)
-      user.setPasswordHash(updateUserRequest.getPasswordHash());
+
+    // TODO: Hash password at service layer
+    if (updateUserRequest.getPassword() != null) {
+      String hashedPassword = PasswordUtils.hashPassword(updateUserRequest.getPassword());
+      user.setPasswordHash(hashedPassword);
+    }
     if (updateUserRequest.getFullName() != null)
       user.setFullName(updateUserRequest.getFullName());
     if (updateUserRequest.getIsActive() != null)
