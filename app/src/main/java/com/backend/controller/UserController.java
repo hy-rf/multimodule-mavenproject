@@ -21,6 +21,9 @@ import com.backend.viewmodel.CurrentUserResponse;
 import com.backend.viewmodel.LoginRequest;
 import com.backend.viewmodel.UpdateUserRequest;
 import com.backend.viewmodel.UpdateUserResult;
+import com.backend.viewmodel.user.CreateUserRequest;
+import com.backend.viewmodel.user.CreateUserResult;
+import com.backend.viewmodel.user.CreateUserStatus;
 
 import jakarta.validation.Valid;
 
@@ -28,6 +31,13 @@ import jakarta.validation.Valid;
 public class UserController {
   @Autowired
   private UserService userService;
+
+  @PreAuthorize("hasRole('admin')")
+  @PostMapping("/user")
+  public ResponseEntity<CreateUserResult> createUser(@RequestBody @Valid CreateUserRequest createUserRequest) {
+    return new ResponseEntity<CreateUserResult>(new CreateUserResult(CreateUserStatus.SUCCESS, null),
+        HttpStatusCode.valueOf(200));
+  }
 
   @PreAuthorize("hasRole('admin')")
   @PostMapping("/test-user")
