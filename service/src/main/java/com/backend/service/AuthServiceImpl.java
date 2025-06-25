@@ -1,5 +1,6 @@
 package com.backend.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 import java.util.Optional;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.backend.common.JwtUtils;
 import com.backend.common.PasswordUtils;
+import com.backend.repository.RoleRepository;
 import com.backend.repository.UserRepository;
 import com.backend.dto.JwtData;
 import com.backend.dto.auth.LoginResult;
@@ -34,6 +36,9 @@ public class AuthServiceImpl implements AuthService {
   private UserRepository userRepository;
 
   @Autowired
+  private RoleRepository roleRepository;
+
+  @Autowired
   private JwtUtils jwtUtils;
 
   @Override
@@ -46,6 +51,10 @@ public class AuthServiceImpl implements AuthService {
     User user = new User();
     user.setUsername(username);
     user.setPasswordHash(hash);
+    Role userRole = roleRepository.findById(4L).get();
+    List<Role> roles = new ArrayList<>();
+    roles.add(userRole);
+    user.setRoles(roles);
 
     userRepository.save(user);
     return new RegisterResult(RegisterStatus.SUCCESS);
