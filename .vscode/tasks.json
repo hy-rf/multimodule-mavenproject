@@ -4,7 +4,7 @@
     {
       "label": "Maven Clean Compile",
       "type": "shell",
-      "command": "./mvnw clean compile",
+      "command": "./mvnw clean install",
       "group": {
         "kind": "build",
         "isDefault": true
