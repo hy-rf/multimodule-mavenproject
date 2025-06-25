@@ -5,6 +5,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.backend.common.PasswordUtils;
 import org.springframework.stereotype.Component;
 
+/**
+ * Not in use
+ */
 @Component
 public class PBKDF2PasswordEncoder implements PasswordEncoder {
   @Override
