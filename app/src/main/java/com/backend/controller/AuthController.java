@@ -62,7 +62,7 @@ public class AuthController {
         Cookie tokenCookie = new Cookie("token", token);
         tokenCookie.setHttpOnly(true);
         tokenCookie.setPath("/");
-        tokenCookie.setMaxAge(3600);
+        tokenCookie.setMaxAge(600);
         // tokenCookie.setDomain("localhost");
         tokenCookie.setAttribute("SameSite", "None");
         // Uncomment if using HTTPS
@@ -99,7 +99,7 @@ public class AuthController {
     Cookie tokenCookie = new Cookie("token", result.getNewToken());
     tokenCookie.setHttpOnly(true);
     tokenCookie.setPath("/");
-    tokenCookie.setMaxAge(3600);
+    tokenCookie.setMaxAge(600);
     // Uncomment if using HTTPS
     // tokenCookie.setSecure(true);
     response.addCookie(tokenCookie);
