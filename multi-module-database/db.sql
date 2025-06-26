@@ -27,47 +27,7 @@ CREATE TABLE user_roles (
     FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE
 );
 
-
-
 CREATE TABLE grades (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(50) UNIQUE NOT NULL
 );
-
-CREATE TABLE classes (
-    id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL,
-    grade_id BIGINT NOT NULL,
-    FOREIGN KEY (grade_id) REFERENCES grades(id) ON DELETE CASCADE
-);
-
-CREATE TABLE students (
-    id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    user_id BIGINT,
-    grade_id BIGINT NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (grade_id) REFERENCES grades(id) ON DELETE CASCADE
-);
-
-CREATE TABLE student_classes (
-    student_id BIGINT NOT NULL,
-    class_id BIGINT NOT NULL,
-    PRIMARY KEY (student_id, class_id),
-    FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
-    FOREIGN KEY (class_id) REFERENCES classes(id) ON DELETE CASCADE
-);
-
-CREATE TABLE teachers (
-    id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    user_id BIGINT,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-);
-
-CREATE TABLE teacher_classes (
-    teacher_id BIGINT NOT NULL,
-    class_id BIGINT NOT NULL,
-    PRIMARY KEY (teacher_id, class_id),
-    FOREIGN KEY (teacher_id) REFERENCES teachers(id) ON DELETE CASCADE,
-    FOREIGN KEY (class_id) REFERENCES classes(id) ON DELETE CASCADE
-);
-

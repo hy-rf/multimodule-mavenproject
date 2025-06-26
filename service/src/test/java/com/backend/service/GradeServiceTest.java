@@ -20,7 +20,7 @@ import com.backend.repository.GradeRepository;
 public class GradeServiceTest {
 
   @InjectMocks
-  private GradeService gradeService = new GradeServiceImpl();
+  private GradeService gradeService = new GradeService();
 
   @Mock
   private GradeRepository gradeRepository;

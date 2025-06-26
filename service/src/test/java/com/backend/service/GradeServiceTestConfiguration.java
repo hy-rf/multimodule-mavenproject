@@ -8,7 +8,7 @@ class GradeServiceTestConfiguration {
 
   @Bean
   public GradeService gradeService() {
-    return new GradeServiceImpl(); // or mock
+    return new GradeService(); // or mock
   }
 
 }
