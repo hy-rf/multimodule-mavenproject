@@ -42,7 +42,10 @@ public class InMemoryCacheRepository<T, ID> implements CacheBaseRepository<T, ID
 
   @Override
   public long increment(ID id) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'increment'");
+    Long exp = expiry.get(id);
+    if (exp == null)
+      exp = 1L;
+    save(id, (T) exp);
+    return exp == 1L ? 1L : exp + 1;
   }
 }

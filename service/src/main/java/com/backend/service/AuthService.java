@@ -50,7 +50,7 @@ public class AuthService {
     User user = new User();
     user.setUsername(username);
     user.setPasswordHash(hash);
-    Role userRole = roleRepository.findById(4L).get();
+    Role userRole = roleRepository.findById(1L).get();
     List<Role> roles = new ArrayList<>();
     roles.add(userRole);
     user.setRoles(roles);
