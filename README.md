@@ -30,6 +30,9 @@ or dev server:
 
 5. You can move jar file to anywhere as standalone runnable jar file.
 
+6. How to debug on IDEA
+   ![idea config](docs/img/idea-debug-config.png)
+
 ### Test
 
 1. Run test command:
