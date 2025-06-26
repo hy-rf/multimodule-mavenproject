@@ -11,5 +11,5 @@ public interface UserService {
 
   void saveExampleUser(String userName, String password);
 
-  void updateUser(User user);
+  void updateUser(User user, List<Long> roleIds);
 }

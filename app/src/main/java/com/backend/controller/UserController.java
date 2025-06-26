@@ -1,5 +1,6 @@
 package com.backend.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,6 +92,7 @@ public class UserController {
       user.setUsername(updateUserRequest.getUsername());
     if (updateUserRequest.getEmail() != null)
       user.setEmail(updateUserRequest.getEmail());
+    List<Long> roleIds = new ArrayList<>();
 
     // TODO: Hash password at service layer
     if (updateUserRequest.getPassword() != null) {
@@ -111,8 +113,11 @@ public class UserController {
       user.setCreatedAt(updateUserRequest.getCreatedAt());
     if (updateUserRequest.getUpdatedAt() != null)
       user.setUpdatedAt(updateUserRequest.getUpdatedAt());
+    if(updateUserRequest.getRoleIds()!=null) {
+      roleIds=updateUserRequest.getRoleIds();
+    }
 
-    userService.updateUser(user);
+    userService.updateUser(user, roleIds);
     UpdateUserResult result = new UpdateUserResult("success");
     return new ResponseEntity<>(result, HttpStatusCode.valueOf(200));
   }

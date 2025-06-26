@@ -1,7 +1,10 @@
 package com.backend.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.backend.model.Role;
+import com.backend.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +22,9 @@ public class UserServiceImpl implements UserService {
 
   @Autowired
   UserRepository userRepository;
+
+  @Autowired
+  RoleRepository roleRepository;
 
   // Implement methods for user management, such as creating, updating, and
   // deleting users.
@@ -52,7 +58,15 @@ public class UserServiceImpl implements UserService {
 
   @Override
   @Transactional
-  public void updateUser(User user) {
+  public void updateUser(User user, List<Long> roleIds) {
+    if(roleIds.size()>0){
+      List<Role> newRoles = new ArrayList<>();
+      for(Long roleId : roleIds) {
+        Role role = roleRepository.getReferenceById(roleId);
+        newRoles.add(role);
+      }
+      user.setRoles(newRoles);
+    }
     userRepository.save(user);
   }
 
