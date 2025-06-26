@@ -5,6 +5,7 @@ import java.util.List;
 import com.backend.dto.grade.AddGradeResult;
 import com.backend.viewmodel.AddGradeRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,6 +26,7 @@ public class GradeController {
     return gradeService.getGrades();
   }
 
+  @PreAuthorize("hasRole('admin')")
   @PostMapping("/grade")
   public AddGradeResponse addGrade(@RequestBody AddGradeRequest addGradeRequest) {
     AddGradeResult result = gradeService.addGrade(addGradeRequest.getName());
