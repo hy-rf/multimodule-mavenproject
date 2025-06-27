@@ -14,7 +14,8 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 
 @Configuration
-public class DataSourceFallbackConfig {
+public class DataSourceConfig {
+    // TODO move connection properties to application.properties
 
     @Value("${spring.datasource.url}")
     private String mysqlUrl;
@@ -35,29 +36,35 @@ public class DataSourceFallbackConfig {
             mysqlDataSource.setUrl(mysqlUrl);
             mysqlDataSource.setUsername(mysqlUsername);
             mysqlDataSource.setPassword(mysqlPassword);
-
-            // Test connection
             try (Connection conn = mysqlDataSource.getConnection()) {
-                // If connection succeeds, use MySQL
+                ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
+                populator.addScript(new ClassPathResource("schema-mysql.sql"));
+                try {
+                    populator.execute(mysqlDataSource);
+                } catch (Exception e) {
+                    System.out.println("Failed to initialize SQLite schema: " + e.getMessage());
+                }
                 return mysqlDataSource;
             }
         } catch (SQLException ex) {
             System.out.println("MySQL unavailable, falling back to SQLite: " + ex.getMessage());
         }
 
-        // Fallback to postgreSQL
+        // Fallback to postgresSQL
         try {
             DriverManagerDataSource postgresDataSource = new DriverManagerDataSource();
             postgresDataSource.setDriverClassName("org.postgresql.Driver");
             postgresDataSource.setUrl("jdbc:postgresql://localhost:5432/mmdb");
             postgresDataSource.setUsername("postgres");
             postgresDataSource.setPassword("");
-            // Test connection
             try (Connection conn = postgresDataSource.getConnection()) {
                 ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
                 populator.addScript(new ClassPathResource("schema-postgres.sql"));
-                populator.execute(postgresDataSource);
-                // If connection succeeds, use PostgreSQL
+                try {
+                    populator.execute(postgresDataSource);
+                } catch (Exception e) {
+                    System.out.println("Failed to initialize SQLite schema: " + e.getMessage());
+                }
                 return postgresDataSource;
             }
         } catch (SQLException ex) {
@@ -72,12 +79,14 @@ public class DataSourceFallbackConfig {
         // Run SQLite schema script
         ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
         populator.addScript(new ClassPathResource("schema-sqlite.sql"));
-        populator.execute(sqliteDataSource);
-
+        try {
+            populator.execute(sqliteDataSource);
+        } catch (Exception e) {
+            System.out.println("Failed to initialize SQLite schema: " + e.getMessage());
+        }
         // Set Hibernate dialect for SQLite
         System.setProperty("spring.jpa.properties.hibernate.dialect", "org.hibernate.community.dialect.SQLiteDialect");
 
-        // SQLite does not require username/password
         return sqliteDataSource;
     }
 }
