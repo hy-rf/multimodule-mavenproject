@@ -32,39 +32,9 @@ CREATE TABLE IF NOT EXISTS grades (
     name TEXT UNIQUE NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS classes (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    grade_id INTEGER NOT NULL,
-    FOREIGN KEY (grade_id) REFERENCES grades(id) ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS students (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER,
-    grade_id INTEGER NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (grade_id) REFERENCES grades(id) ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS student_classes (
-    student_id INTEGER NOT NULL,
-    class_id INTEGER NOT NULL,
-    PRIMARY KEY (student_id, class_id),
-    FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
-    FOREIGN KEY (class_id) REFERENCES classes(id) ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS teachers (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS teacher_classes (
-    teacher_id INTEGER NOT NULL,
-    class_id INTEGER NOT NULL,
-    PRIMARY KEY (teacher_id, class_id),
-    FOREIGN KEY (teacher_id) REFERENCES teachers(id) ON DELETE CASCADE,
-    FOREIGN KEY (class_id) REFERENCES classes(id) ON DELETE CASCADE
-);
+--Example data insertion
+INSERT INTO users (username, password_hash) VALUES ('string', 'z7UbiO1n6KyBeS0O6duzfA==:Z8/P5c1jCqjKjjB92kh/AS27jDE4nn0hnmfPkFuZC+g=');
+INSERT INTO roles (name) VALUES ('user');
+INSERT INTO roles (name) VALUES ('admin');
+INSERT INTO user_roles (user_id, role_id) VALUES (1, 1);
+INSERT INTO user_roles (user_id, role_id) VALUES (1, 2);
