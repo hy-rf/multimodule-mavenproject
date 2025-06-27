@@ -74,6 +74,9 @@ public class DataSourceFallbackConfig {
         populator.addScript(new ClassPathResource("schema-sqlite.sql"));
         populator.execute(sqliteDataSource);
 
+        // Set Hibernate dialect for SQLite
+        System.setProperty("spring.jpa.properties.hibernate.dialect", "org.hibernate.community.dialect.SQLiteDialect");
+
         // SQLite does not require username/password
         return sqliteDataSource;
     }
