@@ -13,7 +13,7 @@ import com.backend.common.JwtUtils;
 import com.backend.common.PasswordUtils;
 import com.backend.repository.RoleRepository;
 import com.backend.repository.UserRepository;
-import com.backend.dto.JwtData;
+import com.backend.common.JwtData;
 import com.backend.dto.auth.LoginResult;
 import com.backend.dto.auth.LoginStatus;
 import com.backend.dto.auth.RefreshResult;

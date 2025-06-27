@@ -1,6 +1,5 @@
 package com.backend.common;
 
-import com.backend.dto.JwtData;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
