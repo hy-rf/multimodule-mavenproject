@@ -1,40 +1,55 @@
 package com.backend.controller;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.backend.common.JwtUtils;
 import com.backend.service.CustomUserDetailsService;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ActiveProfiles("test")
-@WebMvcTest(HomeController.class)
-public class HomeControllerTest {
+class HomeControllerTest {
 
-  @Autowired
-  private MockMvc mockMvc;
+    private HomeController homeController;
+    private MockMvc mockMvc;
 
-  @MockitoBean
-  private JwtUtils jwtUtils;
+    @BeforeEach
+    void setup() {
+        homeController = new HomeController();
 
-  @MockitoBean
-  private CustomUserDetailsService customUserDetailsService;
+        // Manually inject @Value property
+        injectTitle(homeController, "Test Home Title");
 
-  @Test
-  @WithMockUser
-  public void testHomePage() throws Exception {
-    mockMvc.perform(get("/home")).andExpect(status().isOk());
-  }
+        mockMvc = MockMvcBuilders.standaloneSetup(homeController).build();
+    }
 
-  // @SpringBootApplication(scanBasePackages = "com.backend")
-  // static class TestConfiguration {
-  // }
+    @Test
+    void testHomeEndpoint() throws Exception {
+        mockMvc.perform(get("/home"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Test Home Title"));
+    }
 
+    @Test
+    void testIndexRedirectsToSwaggerUI() throws Exception {
+        mockMvc.perform(get("/"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/swagger-ui.html"));
+    }
+
+    // Helper method to inject private field manually (bypass Spring @Value)
+    private void injectTitle(HomeController controller, String value) {
+        try {
+            var field = HomeController.class.getDeclaredField("title");
+            field.setAccessible(true);
+            field.set(controller, value);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
