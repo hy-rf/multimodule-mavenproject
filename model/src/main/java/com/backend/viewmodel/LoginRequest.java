@@ -1,9 +1,9 @@
 package com.backend.viewmodel;
 
-import lombok.Getter;
+import lombok.Data;
 
-@Getter
+@Data
 public class LoginRequest {
-  private String username;
-  private String password;
+    private String username;
+    private String password;
 }
