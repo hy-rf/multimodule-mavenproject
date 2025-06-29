@@ -1,5 +1,7 @@
 #!/bin/zsh
 
+# TODO: add variable for server directory
+
 # Step 1: Run Maven clean install
 echo "Running Maven build..."
 ./mvnw clean install
@@ -14,9 +16,9 @@ fi
 echo "Copying JAR to ../JAVASERVER..."
 cp ./app/target/app-0.0.1.jar ../JAVASERVER
 
-# Step 3: Change working directory to Vue project
-echo "Switching to Vue project directory..."
-cd ../vue-sideproject1 || { echo "Vue project directory not found"; exit 1; }
+# Step 3: Change working directory to sbp-client-nuxt
+echo "Switching to sbp-client-nuxt directory..."
+cd ./sbp-client-nuxt || { echo "sbp-client-nuxt directory not found"; exit 1; }
 
 # Step 4: Delete existing dist directory if it exists
 echo "Cleaning up old dist directory (if exists)..."
