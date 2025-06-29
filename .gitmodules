@@ -1,0 +1,3 @@
+[submodule "sbp-client-nuxt"]
+	path = sbp-client-nuxt
+	url = git@github.com:hy-rf/sbp-client-nuxt.git
