@@ -2,7 +2,6 @@ package com.backend.service;
 
 import com.backend.model.Role;
 import com.backend.repository.RoleRepository;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
