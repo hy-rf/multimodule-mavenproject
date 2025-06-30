@@ -27,11 +27,6 @@ CREATE TABLE user_roles (
     FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE
 );
 
-CREATE TABLE grades (
-    id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(50) UNIQUE NOT NULL
-);
-
 --Example data insertion
 INSERT INTO users (username, password_hash) VALUES ('string', 'z7UbiO1n6KyBeS0O6duzfA==:Z8/P5c1jCqjKjjB92kh/AS27jDE4nn0hnmfPkFuZC+g=');
 INSERT INTO roles (name) VALUES ('user');
