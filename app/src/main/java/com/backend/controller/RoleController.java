@@ -18,7 +18,6 @@ public class RoleController {
         this.roleService = roleService;
     }
 
-
     @PreAuthorize("hasRole('admin')")
     @GetMapping
     List<Role> getRoles() {
