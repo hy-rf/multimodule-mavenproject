@@ -1,6 +1,5 @@
 package com.backend.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.backend.common.PasswordUtils;
 import com.backend.model.User;
 import com.backend.service.UserService;
 import com.backend.viewmodel.CurrentUserResponse;
@@ -31,94 +29,65 @@ import jakarta.validation.Valid;
 
 @RestController
 public class UserController {
-  @Autowired
-  private UserService userService;
+    @Autowired
+    private UserService userService;
 
-  @PreAuthorize("hasRole('admin')")
-  @PostMapping("/user")
-  public ResponseEntity<CreateUserResult> createUser(@RequestBody @Valid CreateUserRequest createUserRequest) {
-    return new ResponseEntity<CreateUserResult>(new CreateUserResult(CreateUserStatus.SUCCESS, null),
-        HttpStatusCode.valueOf(200));
-  }
-
-  @PreAuthorize("hasRole('admin')")
-  @PostMapping("/test-user")
-  public String saveExampleUser(@RequestBody LoginRequest loginRequest) {
-    System.out.println(loginRequest);
-    userService.saveExampleUser(loginRequest.getUsername(), loginRequest.getPassword());
-    return "User information retrieved successfully";
-  }
-
-  @PreAuthorize("hasRole('admin')")
-  @GetMapping("/users")
-  public List<User> getAllUsers() {
-    // Logic to retrieve all users
-    List<User> user = userService.getAllUsers();
-    return user;
-  }
-
-  @PreAuthorize("isAuthenticated()")
-  @GetMapping("/me")
-  public CurrentUserResponse getCurrentUser() {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    String username = authentication.getName();
-    List<String> roles = authentication.getAuthorities()
-        .stream()
-        .map(auth -> auth.getAuthority())
-        .toList();
-    return new CurrentUserResponse(username, roles);
-  }
-
-  @PreAuthorize("hasRole('admin')")
-  @GetMapping("/user/{id}")
-  public User getUserById(@PathVariable Integer id) {
-    // Logic to retrieve user by ID
-
-    return userService.getUserById(id.longValue());
-  }
-
-  /**
-   * Updates a user based on the provided UpdateUserRequest.
-   * Only accessible by users with the 'admin' role.
-   * 
-   * @param updateUserRequest
-   * @return
-   */
-  @PreAuthorize("hasRole('admin')")
-  @PutMapping("/user")
-  public ResponseEntity<UpdateUserResult> updateUser(@Valid @RequestBody UpdateUserRequest updateUserRequest) {
-    User user = userService.getUserById(updateUserRequest.getId().longValue());
-    if (updateUserRequest.getUsername() != null)
-      user.setUsername(updateUserRequest.getUsername());
-    if (updateUserRequest.getEmail() != null)
-      user.setEmail(updateUserRequest.getEmail());
-    List<Long> roleIds = new ArrayList<>();
-
-    // TODO: Hash password at service layer
-    if (updateUserRequest.getPassword() != null) {
-      String hashedPassword = PasswordUtils.hashPassword(updateUserRequest.getPassword());
-      user.setPasswordHash(hashedPassword);
-    }
-    if (updateUserRequest.getFullName() != null)
-      user.setFullName(updateUserRequest.getFullName());
-    if (updateUserRequest.getIsActive() != null)
-      user.setIsActive(updateUserRequest.getIsActive());
-    if (updateUserRequest.getEmailVerified() != null)
-      user.setEmailVerified(updateUserRequest.getEmailVerified());
-    if (updateUserRequest.getTwoFactorEnabled() != null)
-      user.setTwoFactorEnabled(updateUserRequest.getTwoFactorEnabled());
-    if (updateUserRequest.getTwoFactorSecret() != null)
-      user.setTwoFactorSecret(updateUserRequest.getTwoFactorSecret());
-    if (updateUserRequest.getCreatedAt() != null)
-      user.setCreatedAt(updateUserRequest.getCreatedAt());
-    if (updateUserRequest.getUpdatedAt() != null)
-      user.setUpdatedAt(updateUserRequest.getUpdatedAt());
-    if(updateUserRequest.getRoleIds()!=null) {
-      roleIds=updateUserRequest.getRoleIds();
+    @PreAuthorize("hasRole('admin')")
+    @PostMapping("/user")
+    public ResponseEntity<CreateUserResult> createUser(@RequestBody @Valid CreateUserRequest createUserRequest) {
+        return new ResponseEntity<CreateUserResult>(new CreateUserResult(CreateUserStatus.SUCCESS, null),
+                HttpStatusCode.valueOf(200));
     }
 
-    userService.updateUser(user, roleIds);
-    UpdateUserResult result = new UpdateUserResult("success");
-    return new ResponseEntity<>(result, HttpStatusCode.valueOf(200));
-  }
+    @PreAuthorize("hasRole('admin')")
+    @PostMapping("/test-user")
+    public String saveExampleUser(@RequestBody LoginRequest loginRequest) {
+        System.out.println(loginRequest);
+        userService.saveExampleUser(loginRequest.getUsername(), loginRequest.getPassword());
+        return "User information retrieved successfully";
+    }
+
+    @PreAuthorize("hasRole('admin')")
+    @GetMapping("/users")
+    public List<User> getAllUsers() {
+        // Logic to retrieve all users
+        List<User> user = userService.getAllUsers();
+        return user;
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/me")
+    public CurrentUserResponse getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        List<String> roles = authentication.getAuthorities()
+                .stream()
+                .map(auth -> auth.getAuthority())
+                .toList();
+        return new CurrentUserResponse(username, roles);
+    }
+
+    @PreAuthorize("hasRole('admin')")
+    @GetMapping("/user/{id}")
+    public User getUserById(@PathVariable Integer id) {
+        // Logic to retrieve user by ID
+
+        return userService.getUserById(id.longValue());
+    }
+
+    /**
+     * Updates a user based on the provided UpdateUserRequest.
+     * Only accessible by users with the 'admin' role.
+     *
+     * @param updateUserRequest
+     * @return
+     */
+    @PreAuthorize("hasRole('admin')")
+    @PutMapping("/user")
+    public ResponseEntity<UpdateUserResult> updateUser(@Valid @RequestBody UpdateUserRequest updateUserRequest) {
+        // TODO: check result of updateUser Service call
+        userService.updateUser(updateUserRequest);
+        UpdateUserResult result = new UpdateUserResult("success");
+        return new ResponseEntity<>(result, HttpStatusCode.valueOf(200));
+    }
 }
