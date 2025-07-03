@@ -15,11 +15,26 @@
         "-Dspring-boot.run.jvmArguments=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8080",
         "spring-boot:run"
       ],
-      "port": 8080,
       "preLaunchTask": "Maven Clean Compile",
       "env": {
         "SPRING_PROFILES_ACTIVE": "dev"
       }
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Nuxt Dev (sbp-client-nuxt)",
+      "cwd": "${workspaceFolder}/sbp-client-nuxt",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev"
+      ],
+      "autoAttachChildProcesses": true,
+      "console": "integratedTerminal",
+      "skipFiles": [
+        "<node_internals>/**"
+      ]
     }
   ]
 }
