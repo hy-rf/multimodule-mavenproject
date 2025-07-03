@@ -104,12 +104,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.flywaydb</groupId>
-            <artifactId>flyway-mysql</artifactId>
-            <version>10.13.0</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
         </dependency>
@@ -138,35 +132,7 @@
 
 
     <build>
-        <!--plugin
-        management seems no need-->
-        <!--        <pluginManagement>-->
-        <!--            <plugins>-->
-        <!--                <plugin>-->
-        <!--                    <groupId>org.springframework.boot</groupId>-->
-        <!--                    <artifactId>spring-boot-maven-plugin</artifactId>-->
-        <!--                    <version>3.5.0</version>-->
-        <!--                    <configuration>-->
-        <!--                        <mainClass>com.backend.Application</mainClass>-->
-        <!--                    </configuration>-->
-        <!--                </plugin>-->
-        <!--            </plugins>-->
-        <!--        </pluginManagement>-->
-
         <plugins>
-            <!-- <plugin>
-                <groupId>org.flywaydb</groupId>
-                <artifactId>flyway-maven-plugin</artifactId>
-                <version>10.0.0</version>
-                <configuration>
-                    <url>jdbc:mysql://localhost:3306/mmdb</url>
-                    <user>root</user>
-                    <password>00000000</password>
-                    <locations>
-                        <location>filesystem:model/src/main/resources/db/migration</location>
-                    </locations>
-                </configuration>
-            </plugin> -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
