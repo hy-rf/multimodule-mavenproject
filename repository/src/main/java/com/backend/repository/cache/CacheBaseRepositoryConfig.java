@@ -11,14 +11,15 @@ import lombok.extern.slf4j.Slf4j;
 public class CacheBaseRepositoryConfig {
   @Bean
   public CacheBaseRepository<String, String> cacheBaseRepository(StringRedisTemplate redisTemplate) {
-    try {
-      // Try a simple Redis command to check connectivity
-      redisTemplate.opsForValue().get("health_check");
-      log.warn("Redis is available. Using RedisLoginRateLimiterService.");
-      return new RedisBaseRepository<>(redisTemplate);
-    } catch (Exception ex) {
-      log.warn("Redis is NOT available. Using InMemoryLoginRateLimiterService.");
-      return new InMemoryCacheRepository<>();
-    }
+    return new InMemoryCacheRepository<>();
+    // try {
+    //   // Try a simple Redis command to check connectivity
+    //   redisTemplate.opsForValue().get("health_check");
+    //   log.warn("Redis is available. Using RedisLoginRateLimiterService.");
+    //   return new RedisBaseRepository<>(redisTemplate);
+    // } catch (Exception ex) {
+    //   log.warn("Redis is NOT available. Using InMemoryLoginRateLimiterService.");
+    //   return new InMemoryCacheRepository<>();
+    // }
   }
 }
