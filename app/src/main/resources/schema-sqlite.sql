@@ -1,5 +1,6 @@
 PRAGMA foreign_keys = ON;
 
+--TODO: date is not working as expected in sqlite, need to use datetime('now') or similar
 CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT UNIQUE,
