@@ -19,7 +19,7 @@ public class LoginRateLimiterService {
     private LoginAttemptRepository loginAttemptRepository;
 
     public boolean isAllowed(String username) {
-        loginAttemptRepository.save(new LoginAttempt(username)); // Save the login attempt
+        // loginAttemptRepository.save(new LoginAttempt(username)); // Save the login attempt
         String key = "login_attempts:" + username;
         int maxAttempts = 10;
         Duration window = Duration.ofMinutes(10);
