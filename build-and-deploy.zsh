@@ -51,10 +51,10 @@ cp -r .output ../../JAVASERVER/output
 echo "Switching to JAVASERVER directory..."
 cd ../../JAVASERVER || { echo "JAVASERVER directory not found"; exit 1; }
 echo "Starting Java server in background..."
-nohup java -jar app-0.0.1.jar --spring.profiles.active=prod > output.log 2>&1 &
+nohup java -jar app-0.0.1.jar --spring.profiles.active=prod > /dev/null 2>&1 < /dev/null &
 
 echo "Starting Nuxt server in background..."
-nohup node output/server/index.mjs > sbp.log 2>&1 < /dev/null &
+nohup node output/server/index.mjs > sbp-client-nuxt.log 2>&1 < /dev/null &
 disown
 
 # Step 9: Start nginx server
