@@ -20,9 +20,10 @@ cp ./app/target/app-0.0.1.jar ../JAVASERVER
 echo "Switching to sbp-client-nuxt directory..."
 cd ./sbp-client-nuxt || { echo "sbp-client-nuxt directory not found"; exit 1; }
 
-# Step 4: Delete existing dist directory if it exists
-echo "Cleaning up old dist directory (if exists)..."
-rm -rf ./nuxt
+# Step 4: Delete existing build artifact directory if it exists
+echo "Cleaning up old build artifact directory (if exists)..."
+rm -rf .nuxt
+rm -rf .output
 
 # Step 5: Install dependencies
 echo "Installing npm dependencies..."
@@ -38,21 +39,26 @@ if [[ $? -ne 0 ]]; then
   exit 1
 fi
 
-# Step 7: Run Nuxt server
-echo "Running Nuxt server..."
-npm run start
+# Step 7: Copy built files to output directory
+echo "Copying build output to .output directory..."
+cp -r .output ../../JAVASERVER/output
 
 # Step 7: Copy built files to web server directory
 # echo "Copying build output to /opt/homebrew/var/www/html/..."
 # cp -R ./dist/* /opt/homebrew/var/www/html/
 
 # Step 8: Start the Java server
+echo "Switching to JAVASERVER directory..."
+cd ../../JAVASERVER || { echo "JAVASERVER directory not found"; exit 1; }
 echo "Starting Java server in background..."
-cd ../JAVASERVER || { echo "JAVASERVER directory not found"; exit 1; }
-nohup java -jar app-0.0.1.jar > output.log 2>&1 &
+nohup java -jar app-0.0.1.jar --spring.profiles.active=prod > output.log 2>&1 &
+
+echo "Starting Nuxt server in background..."
+nohup node output/server/index.mjs > sbp.log 2>&1 < /dev/null &
+disown
 
 # Step 9: Start nginx server
 echo "Starting nginx server..."
-brew services start nginx
+brew services run nginx
 
 echo "All done!"
