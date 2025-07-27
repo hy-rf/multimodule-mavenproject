@@ -91,7 +91,7 @@ public class AuthService {
         // 8.3 Collect the IDs into a List
         List<Long> roleIds = roleIdStream.toList();
         String token = jwtUtils.generateToken(userId, roleIds,
-                jwtSecret, 60000L);
+                jwtSecret, 600000L);
         String refreshToken = jwtUtils.generateToken(userId, roleIds,
                 jwtSecretRefresh, 3600000L);
         // TODO add token to redis
