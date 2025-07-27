@@ -35,6 +35,7 @@ public class UserController {
     @PreAuthorize("hasRole('admin')")
     @PostMapping("/user")
     public ResponseEntity<CreateUserResult> createUser(@RequestBody @Valid CreateUserRequest createUserRequest) {
+        // TODO: Call User Service
         return new ResponseEntity<CreateUserResult>(new CreateUserResult(CreateUserStatus.SUCCESS, null),
                 HttpStatusCode.valueOf(200));
     }
