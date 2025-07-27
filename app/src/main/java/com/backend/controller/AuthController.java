@@ -66,7 +66,7 @@ public class AuthController {
         // tokenCookie.setDomain("localhost");
         tokenCookie.setAttribute("SameSite", "None");
         // Uncomment if using HTTPS
-        // cookie.setSecure(true);
+        tokenCookie.setSecure(true);
         response.addCookie(tokenCookie);
         String refreshToken = result.getRefresh();
         Cookie refreshTokenCookie = new Cookie("refresh", refreshToken);
@@ -76,7 +76,7 @@ public class AuthController {
         // tokenCookie.setDomain("localhost");
         refreshTokenCookie.setAttribute("SameSite", "None");
         // Uncomment if using HTTPS
-        // cookie.setSecure(true);
+        refreshTokenCookie.setSecure(true);
         response.addCookie(refreshTokenCookie);
 
         yield "Login successful";
@@ -101,14 +101,14 @@ public class AuthController {
     tokenCookie.setPath("/");
     tokenCookie.setMaxAge(600);
     // Uncomment if using HTTPS
-    // tokenCookie.setSecure(true);
+    tokenCookie.setSecure(true);
     response.addCookie(tokenCookie);
     Cookie refreshTokenCookie = new Cookie("refresh", result.getNewFreshToken());
     refreshTokenCookie.setHttpOnly(true);
     refreshTokenCookie.setPath("/");
     refreshTokenCookie.setMaxAge(60000);
     // Uncomment if using HTTPS
-    // refreshTokenCookie.setSecure(true);
+    refreshTokenCookie.setSecure(true);
     response.addCookie(refreshTokenCookie);
 
     return "Token refreshed successfully";
