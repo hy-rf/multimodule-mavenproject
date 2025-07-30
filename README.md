@@ -40,3 +40,7 @@ or dev server:
 ```shell
 ./mvnw clean test
 ```
+
+### Deploy
+
+[Link Text](docs/nginx.conf)
