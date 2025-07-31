@@ -5,13 +5,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
-
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 
 @Configuration
 public class DataSourceConfig {
@@ -28,7 +27,7 @@ public class DataSourceConfig {
 
     @Bean
     @Primary
-    public DataSource dataSource() {
+    public DataSource dataSource() throws SQLException {
         // Try MySQL first
         try {
             DriverManagerDataSource mysqlDataSource = new DriverManagerDataSource();
@@ -51,42 +50,38 @@ public class DataSourceConfig {
         }
 
         // Fallback to postgresSQL
-        try {
-            DriverManagerDataSource postgresDataSource = new DriverManagerDataSource();
-            postgresDataSource.setDriverClassName("org.postgresql.Driver");
-            postgresDataSource.setUrl("jdbc:postgresql://localhost:5432/mmdb");
-            postgresDataSource.setUsername("postgres");
-            postgresDataSource.setPassword("");
-            try (Connection conn = postgresDataSource.getConnection()) {
-                ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
-                populator.addScript(new ClassPathResource("schema-postgres.sql"));
-                try {
-                    populator.execute(postgresDataSource);
-                } catch (Exception e) {
-                    System.out.println("Failed to initialize SQLite schema: " + e.getMessage());
-                }
-                return postgresDataSource;
+        DriverManagerDataSource postgresDataSource = new DriverManagerDataSource();
+        postgresDataSource.setDriverClassName("org.postgresql.Driver");
+        postgresDataSource.setUrl("jdbc:postgresql://localhost:5432/mmdb");
+        postgresDataSource.setUsername("mmdbuser");
+        postgresDataSource.setPassword("00000000");
+        try (Connection conn = postgresDataSource.getConnection()) {
+            ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
+            populator.addScript(new ClassPathResource("schema-postgres.sql"));
+            try {
+                populator.execute(postgresDataSource);
+            } catch (Exception e) {
+                System.out.println("Failed to initialize SQLite schema: " + e.getMessage());
             }
-        } catch (SQLException ex) {
-            System.out.println("PostgresSQL unavailable, falling back to SQLite: " + ex.getMessage());
+            return postgresDataSource;
         }
 
-        // Fallback to SQLite
-        DriverManagerDataSource sqliteDataSource = new DriverManagerDataSource();
-        sqliteDataSource.setDriverClassName("org.sqlite.JDBC");
-        sqliteDataSource.setUrl("jdbc:sqlite:./fallback.db");
-
-        // Run SQLite schema script
-        ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
-        populator.addScript(new ClassPathResource("schema-sqlite.sql"));
-        try {
-            populator.execute(sqliteDataSource);
-        } catch (Exception e) {
-            System.out.println("Failed to initialize SQLite schema: " + e.getMessage());
-        }
-        // Set Hibernate dialect for SQLite
-        System.setProperty("spring.jpa.properties.hibernate.dialect", "org.hibernate.community.dialect.SQLiteDialect");
-
-        return sqliteDataSource;
+//        // Fallback to SQLite
+//        DriverManagerDataSource sqliteDataSource = new DriverManagerDataSource();
+//        sqliteDataSource.setDriverClassName("org.sqlite.JDBC");
+//        sqliteDataSource.setUrl("jdbc:sqlite:./fallback.db");
+//
+//        // Run SQLite schema script
+//        ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
+//        populator.addScript(new ClassPathResource("schema-sqlite.sql"));
+//        try {
+//            populator.execute(sqliteDataSource);
+//        } catch (Exception e) {
+//            System.out.println("Failed to initialize SQLite schema: " + e.getMessage());
+//        }
+//        // Set Hibernate dialect for SQLite
+//        System.setProperty("spring.jpa.properties.hibernate.dialect", "org.hibernate.community.dialect.SQLiteDialect");
+//
+//        return sqliteDataSource;
     }
 }
