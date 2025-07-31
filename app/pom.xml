@@ -22,6 +22,12 @@
 
         <dependency>
             <groupId>com.backend</groupId>
+            <artifactId>resource-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.backend</groupId>
             <artifactId>service</artifactId>
             <version>${project.version}</version>
         </dependency>

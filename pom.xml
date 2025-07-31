@@ -12,6 +12,7 @@
         <module>repository</module>
         <module>service</module>
         <module>app</module>
+        <module>resource-api</module>
     </modules>
 
     <parent>

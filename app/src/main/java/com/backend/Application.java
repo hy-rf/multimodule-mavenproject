@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Slf4j
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages= {"com.backend"})
 @EnableJpaRepositories(basePackages = "com.backend.repository")
 public class Application {
 
