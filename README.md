@@ -2,7 +2,13 @@
 
 ### Prerequisite
 
-1. JDK 21
+1. Make sure your computer has JDK 21 already installed.
+
+2. Clone this repository:
+
+```shell
+git clone --recursive git@github.com:hy-rf/multimodule-mavenproject.git
+```
 
 ### How to run
 
