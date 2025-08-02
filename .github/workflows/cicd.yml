@@ -35,5 +35,12 @@ jobs:
             cd multimodule-mavenproject
           fi
 
-          ps
+          # TODO: Ensure the correct Java version is used
+
+
+          # Build the project
+          ./mvnw clean install
+          
+          # Deploy the application
+          mv app/target/app*.jar ~/app.jar
         EOF
