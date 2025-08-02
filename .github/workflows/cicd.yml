@@ -33,6 +33,20 @@ jobs:
     - name: Build with Maven
       run: ./mvnw clean install
 
-    - name: Copy JAR to VM
+        - name: Copy JAR to VM with timestamp
       run: |
-        scp -i ~/.ssh/id_rsa.pem -o StrictHostKeyChecking=no app/target/app*.jar ec2-user@${{ secrets.HOST }}:~/app.jar
+        TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+        scp -i ~/.ssh/id_rsa.pem -o StrictHostKeyChecking=no app/target/app*.jar ec2-user@${{ secrets.HOST }}:~/JAVASERVER/app_$TIMESTAMP.jar
+        echo "TIMESTAMP=$TIMESTAMP" >> $GITHUB_ENV
+
+    - name: Restart App on VM
+      run: |
+        ssh -i ~/.ssh/id_rsa.pem -o StrictHostKeyChecking=no ec2-user@${{ secrets.HOST }} << EOF
+          echo "Killing process on port 8080..."
+          sudo lsof -t -i:8080 | xargs -r kill -9
+
+          echo "Starting new app with limited memory..."
+          nohup java -Xms128m -Xmx256m -XX:MaxRAMPercentage=50 -XX:+UseSerialGC \
+            -jar ~/JAVASERVER/app_${{ env.TIMESTAMP }}.jar --spring.profiles.active=prod > /dev/null 2>&1 < /dev/null &
+        EOF
+
