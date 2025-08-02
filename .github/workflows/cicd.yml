@@ -1,0 +1,38 @@
+name: cicd
+
+on:
+  push:
+    branches:
+      - main  # or your deploy branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout (Optional, only needed if using some files locally)
+      uses: actions/checkout@v4
+
+    - name: Set up SSH key
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa.pem
+        chmod 600 ~/.ssh/id_rsa.pem
+
+    - name: Add to known_hosts
+      run: |
+        ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
+    - name: SSH into VM, clone repo, and build
+      run: |
+        ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_HOST }} << 'EOF'
+          cd ~
+          if [ -d multimodule-mavenproject ]; then
+            cd multimodule-mavenproject && git pull
+          else
+            git clone https://github.com/hy-rf/multimodule-mavenproject.git
+            cd multimodule-mavenproject
+          fi
+
+          ls
+        EOF
