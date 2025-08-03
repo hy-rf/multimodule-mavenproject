@@ -43,7 +43,7 @@ jobs:
       run: |
         ssh -i ~/.ssh/id_rsa.pem -o StrictHostKeyChecking=no ec2-user@${{ secrets.HOST }} << EOF
           echo "Killing process on port 8080..."
-          sudo lsof -t -i:8080 | xargs -r kill -9
+          sudo lsof -t -i:8080 | xargs -r kill -15
 
           echo "Starting new app with limited memory..."
           nohup java -Xms128m -Xmx256m -XX:MaxRAMPercentage=50 -XX:+UseSerialGC \
