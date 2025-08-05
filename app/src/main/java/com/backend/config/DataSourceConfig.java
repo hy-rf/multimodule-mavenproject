@@ -14,47 +14,27 @@ import java.sql.SQLException;
 
 @Configuration
 public class DataSourceConfig {
-    // TODO move connection properties to application.properties
+
+    @Value("${spring.datasource.driver-class-name}")
+    private String driverClassName;
 
     @Value("${spring.datasource.url}")
-    private String mysqlUrl;
+    private String url;
 
     @Value("${spring.datasource.username}")
-    private String mysqlUsername;
+    private String username;
 
     @Value("${spring.datasource.password}")
-    private String mysqlPassword;
+    private String password;
 
     @Bean
     @Primary
     public DataSource dataSource() throws SQLException {
-        // Try MySQL first
-        try {
-            DriverManagerDataSource mysqlDataSource = new DriverManagerDataSource();
-            mysqlDataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-            mysqlDataSource.setUrl(mysqlUrl);
-            mysqlDataSource.setUsername(mysqlUsername);
-            mysqlDataSource.setPassword(mysqlPassword);
-            try (Connection conn = mysqlDataSource.getConnection()) {
-                ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
-                populator.addScript(new ClassPathResource("schema-mysql.sql"));
-                try {
-                    populator.execute(mysqlDataSource);
-                } catch (Exception e) {
-                    System.out.println("Failed to initialize SQLite schema: " + e.getMessage());
-                }
-                return mysqlDataSource;
-            }
-        } catch (SQLException ex) {
-            System.out.println("MySQL unavailable, falling back to SQLite: " + ex.getMessage());
-        }
-
-        // Fallback to postgresSQL
         DriverManagerDataSource postgresDataSource = new DriverManagerDataSource();
-        postgresDataSource.setDriverClassName("org.postgresql.Driver");
-        postgresDataSource.setUrl("jdbc:postgresql://localhost:5432/mmdb");
-        postgresDataSource.setUsername("mmdbuser");
-        postgresDataSource.setPassword("00000000");
+        postgresDataSource.setDriverClassName(driverClassName);
+        postgresDataSource.setUrl(url);
+        postgresDataSource.setUsername(username);
+        postgresDataSource.setPassword(password);
         try (Connection conn = postgresDataSource.getConnection()) {
             ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
             populator.addScript(new ClassPathResource("schema-postgres.sql"));
