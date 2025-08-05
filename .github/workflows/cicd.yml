@@ -54,7 +54,8 @@ jobs:
           sudo lsof -t -i:8080 | xargs -r kill -15
 
           echo "Starting new app with limited memory..."
+          cd ~/JAVASERVER
           nohup java -Xms128m -Xmx256m -XX:MaxRAMPercentage=50 -XX:+UseSerialGC \
-            -jar ~/JAVASERVER/app_${{ env.TIMESTAMP }}.jar --spring.profiles.active=prod > /dev/null 2>&1 < /dev/null &
+            -jar app_${{ env.TIMESTAMP }}.jar --spring.profiles.active=prod > /dev/null 2>&1 < /dev/null &
         EOF
 
