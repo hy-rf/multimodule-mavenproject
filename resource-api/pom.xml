@@ -11,4 +11,12 @@
 
     <artifactId>resource-api</artifactId>
 
+    <dependencies>
+      <dependency>
+        <groupId>com.backend</groupId>
+        <artifactId>service</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+    </dependencies>
+
 </project>
