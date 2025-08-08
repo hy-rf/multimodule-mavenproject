@@ -35,4 +35,17 @@ public class PostService {
     post.setAuthor(userOpt.get());
     return postRepository.save(post);
   }
+
+  public List<Post> getPostsByUser(Long userId) {
+    Optional<List<Post>> posts = postRepository.findByAuthorId(userId);
+    if (posts.isEmpty() || posts.get().isEmpty()) {
+      throw new IllegalArgumentException("No posts found for user with id: " + userId);
+    }
+    return posts.get();
+  }
+
+  public Post getPostById(Long id) {
+    return postRepository.findById(id)
+        .orElse(null); // or throw an exception if preferred
+  }
 }

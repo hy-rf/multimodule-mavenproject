@@ -10,6 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,5 +41,24 @@ public class PostController {
         Long userId = userDetails.getId(); // This should be replaced with actual user ID retrieval logic
         postService.createPost(createPostRequest.getTitle(), createPostRequest.getContent(), userId);
         return "Successfully created post with title: " + createPostRequest.getTitle();
+    }
+
+    @GetMapping("/my-posts")
+    @PreAuthorize("isAuthenticated()")
+    public List<Post> getPostsByUser(HttpServletResponse response) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        Long userId = userDetails.getId(); // This should be replaced with actual user ID retrieval logic
+        return postService.getPostsByUser(userId);
+    }
+
+    @GetMapping("/post/{id}")
+    public Post getPostById(@PathVariable Long id, HttpServletResponse response) {
+        Post post = postService.getPostById(id);
+        if (post == null) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return null; // or throw an exception
+        }
+        return post;
     }
 }
