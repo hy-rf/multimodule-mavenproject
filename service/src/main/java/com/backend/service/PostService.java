@@ -3,12 +3,16 @@ package com.backend.service;
 import com.backend.model.Post;
 import com.backend.model.User;
 import com.backend.repository.PostRepository;
+import com.backend.repository.PostSpecification;
 import com.backend.repository.UserRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -48,4 +52,23 @@ public class PostService {
     return postRepository.findById(id)
         .orElse(null); // or throw an exception if preferred
   }
+
+  public List<Post> getPosts(
+            String keyword,
+            String authorName,
+            LocalDateTime createdAfter,
+            LocalDateTime createdBefore,
+            String sortBy,
+            String order
+    ) {
+        Specification<Post> spec = Specification.where(PostSpecification.hasTitleOrContentLike(keyword))
+                .and(PostSpecification.hasAuthorNameLike(authorName))
+                .and(PostSpecification.createdAfter(createdAfter))
+                .and(PostSpecification.createdBefore(createdBefore));
+
+        Sort.Direction direction = order.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Sort sort = Sort.by(direction, sortBy);
+
+        return postRepository.findAll(spec, sort);
+    }
 }
