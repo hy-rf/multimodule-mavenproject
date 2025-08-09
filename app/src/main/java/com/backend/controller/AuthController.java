@@ -1,6 +1,7 @@
 package com.backend.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -116,9 +117,22 @@ public class AuthController {
     return "Token refreshed successfully";
   }
 
-  @PostMapping("/logout")
-  public String logout() {
-    // Logic for user logout
+  @GetMapping("/leave")
+  @PreAuthorize("isAuthenticated()")
+  public String logout(HttpServletResponse response) {
+    Cookie tokenCookie = new Cookie("token", null);
+    tokenCookie.setPath("/");
+    tokenCookie.setHttpOnly(true);
+    tokenCookie.setMaxAge(0); // delete immediately
+    response.addCookie(tokenCookie);
+
+    // Clear refresh cookie
+    Cookie refreshCookie = new Cookie("refresh", null);
+    refreshCookie.setPath("/");
+    refreshCookie.setHttpOnly(true);
+    refreshCookie.setMaxAge(0);
+    response.addCookie(refreshCookie);
+
     return "User logged out successfully";
   }
 
