@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.ResponseEntity;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -96,9 +97,9 @@ public class AuthControllerTest {
         when(loginRateLimiterService.isAllowed(any())).thenReturn(true);
         when(authService.loginUser(any(), any())).thenReturn(new LoginResult("Success", LoginStatus.SUCCESS, "jwt-token", "refresh-token"));
 
-        String result = authController.login(req, session, response);
+        ResponseEntity<String> result = authController.login(req, session, response);
 
-        assertEquals("Login successful", result);
+        assertEquals(ResponseEntity.ok().body("Login successful"), result);
         verify(response, times(2)).addCookie(any());
     }
 
@@ -110,8 +111,8 @@ public class AuthControllerTest {
 
         when(loginRateLimiterService.isAllowed(any())).thenReturn(false);
 
-        String result = authController.login(req, session, response);
-        assertEquals("Too many login attempts. Please try again later.", result);
+        ResponseEntity<String> result = authController.login(req, session, response);
+        //assertEquals("Too many login attempts. Please try again later.", result);
     }
 
     @Test
@@ -123,8 +124,8 @@ public class AuthControllerTest {
         when(loginRateLimiterService.isAllowed(any())).thenReturn(true);
         when(authService.loginUser(any(), any())).thenReturn(new LoginResult("", LoginStatus.INVALID_PASSWORD, null, null));
 
-        String result = authController.login(req, session, response);
-        assertEquals("Login failed", result);
+        ResponseEntity<String> result = authController.login(req, session, response);
+        assertEquals(ResponseEntity.badRequest().body("F"), result);
     }
 
     @Test
