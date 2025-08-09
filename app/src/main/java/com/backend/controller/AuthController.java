@@ -1,6 +1,8 @@
 package com.backend.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -54,9 +56,11 @@ public class AuthController {
 
   @PostMapping("/login")
   @Operation(summary = "Login as user")
-  public String login(@RequestBody LoginRequest loginRequest, HttpSession session, HttpServletResponse response) {
+  public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest, HttpSession session, HttpServletResponse response) {
     if (!loginRateLimiterService.isAllowed(loginRequest.getUsername())) {
-      return "Too many login attempts. Please try again later.";
+      return ResponseEntity
+                .status(HttpStatus.TOO_MANY_REQUESTS)
+                .body("Too many login attempts. Please try again later.");
     }
     LoginResult result = authService.loginUser(loginRequest.getUsername(), loginRequest.getPassword());
     return switch (result.getStatus()) {
@@ -82,12 +86,12 @@ public class AuthController {
         refreshTokenCookie.setSecure(true);
         response.addCookie(refreshTokenCookie);
 
-        yield "Login successful";
+        yield ResponseEntity.ok("Login successful");
       }
-      case USER_NOT_FOUND -> "Login failed";
-      case INVALID_PASSWORD -> "Login failed";
-      case ERROR -> "Login failed";
-      default -> "Login failed";
+      case USER_NOT_FOUND -> ResponseEntity.badRequest().body("F");
+      case INVALID_PASSWORD -> ResponseEntity.badRequest().body("F");
+      case ERROR -> ResponseEntity.badRequest().body("F");
+      default -> ResponseEntity.badRequest().body("F");
     };
   }
 
