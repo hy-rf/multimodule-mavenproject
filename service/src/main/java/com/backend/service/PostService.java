@@ -1,9 +1,11 @@
 package com.backend.service;
 
 import com.backend.model.Post;
+import com.backend.model.Reply;
 import com.backend.model.User;
 import com.backend.repository.PostRepository;
 import com.backend.repository.PostSpecification;
+import com.backend.repository.ReplyRepository;
 import com.backend.repository.UserRepository;
 
 import java.time.LocalDateTime;
@@ -20,6 +22,9 @@ public class PostService {
 
   @Autowired
   private PostRepository postRepository;
+
+  @Autowired
+  private ReplyRepository replyRepository;
 
   @Autowired
   private UserRepository userRepository;
@@ -54,21 +59,45 @@ public class PostService {
   }
 
   public List<Post> getPosts(
-            String keyword,
-            String authorName,
-            LocalDateTime createdAfter,
-            LocalDateTime createdBefore,
-            String sortBy,
-            String order
-    ) {
-        Specification<Post> spec = Specification.where(PostSpecification.hasTitleOrContentLike(keyword))
-                .and(PostSpecification.hasAuthorNameLike(authorName))
-                .and(PostSpecification.createdAfter(createdAfter))
-                .and(PostSpecification.createdBefore(createdBefore));
+      String keyword,
+      String authorName,
+      LocalDateTime createdAfter,
+      LocalDateTime createdBefore,
+      String sortBy,
+      String order) {
+    Specification<Post> spec = Specification.where(PostSpecification.hasTitleOrContentLike(keyword))
+        .and(PostSpecification.hasAuthorNameLike(authorName))
+        .and(PostSpecification.createdAfter(createdAfter))
+        .and(PostSpecification.createdBefore(createdBefore));
 
-        Sort.Direction direction = order.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
-        Sort sort = Sort.by(direction, sortBy);
+    Sort.Direction direction = order.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
+    Sort sort = Sort.by(direction, sortBy);
 
-        return postRepository.findAll(spec, sort);
+    return postRepository.findAll(spec, sort);
+  }
+
+  public String createReply(Long postId, String content, Long userId, Long parentReplyId) {
+    Optional<Post> postOpt = postRepository.findById(postId);
+    if (!postOpt.isPresent()) {
+      throw new IllegalArgumentException("Post not found with id: " + postId);
     }
+
+    Post post = postOpt.get();
+    Reply reply = new Reply();
+    reply.setContent(content);
+    reply.setPost(post);
+    reply.setAuthor(userRepository.findById(userId)
+        .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + userId)));
+    if (parentReplyId != null) {
+      reply.setParentReply(replyRepository.findById(parentReplyId)
+          .orElseThrow(() -> new IllegalArgumentException("Parent reply not found with id: " + parentReplyId)));
+    } else {
+      reply.setParentReply(null);
+    }
+
+    post.getReplies().add(reply);
+    postRepository.save(post);
+
+    return "Reply created successfully";
+  }
 }

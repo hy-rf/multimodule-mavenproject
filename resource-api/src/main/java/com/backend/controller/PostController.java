@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -77,5 +78,19 @@ public class PostController {
             @RequestParam(defaultValue = "desc") String order
     ) {
         return postService.getPosts(keyword, authorName, createdAfter, createdBefore, sortBy, order);
+    }
+
+    @PostMapping("reply") 
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<String> replyToPost(
+            @RequestParam Long postId,
+            @RequestParam(required = false) Long parentReplyId,
+            @RequestParam String content,
+            HttpServletResponse response) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        Long userId = userDetails.getId();
+        postService.createReply(postId, content, userId, parentReplyId);
+        return ResponseEntity.ok("Reply successfully created");
     }
 }
