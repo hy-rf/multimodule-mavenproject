@@ -42,15 +42,15 @@ public class AuthController {
 
   @PostMapping("/register")
   @Operation(summary = "Register")
-  public String signup(@Valid @RequestBody RegisterRequest registerRequest, HttpSession session,
+  public ResponseEntity<String> signup(@Valid @RequestBody RegisterRequest registerRequest, HttpSession session,
       HttpServletResponse response) {
     RegisterResult result = authService.registerUser(registerRequest.username, registerRequest.password);
     return switch (result.getStatus()) {
-      case SUCCESS -> "User registered successfully";
-      case USERNAME_TAKEN -> "Username is already taken";
-      case INVALID_PASSWORD -> "Invalid password format";
-      case ERROR -> "An error occurred during registration";
-      default -> "Unknown registration status";
+      case SUCCESS -> ResponseEntity.ok().body("User registered successfully");
+      case USERNAME_TAKEN -> ResponseEntity.badRequest().body("Username is already taken");
+      case INVALID_PASSWORD -> ResponseEntity.badRequest().body("Invalid password format");
+      case ERROR -> ResponseEntity.badRequest().body("An error occurred during registration");
+      default -> ResponseEntity.badRequest().body("Unknown registration status");
     };
   }
 

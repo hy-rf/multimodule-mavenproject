@@ -71,9 +71,9 @@ public class AuthControllerTest {
         req.password = "Password123";
 
         when(authService.registerUser(any(), any())).thenReturn(new RegisterResult(RegisterStatus.SUCCESS));
-        String result = authController.signup(req, session, response);
+        ResponseEntity<String> result = authController.signup(req, session, response);
 
-        assertEquals("User registered successfully", result);
+        assertEquals(ResponseEntity.ok().body("User registered successfully"), result);
     }
 
     @Test
@@ -83,9 +83,9 @@ public class AuthControllerTest {
         req.password = "Password123";
 
         when(authService.registerUser(any(), any())).thenReturn(new RegisterResult(RegisterStatus.USERNAME_TAKEN));
-        String result = authController.signup(req, session, response);
+        ResponseEntity<String> result = authController.signup(req, session, response);
 
-        assertEquals("Username is already taken", result);
+        assertEquals(ResponseEntity.badRequest().body("Username is already taken"), result);
     }
 
     @Test
