@@ -40,9 +40,9 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .formLogin(form -> form.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
-        http.addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class);
-        http.exceptionHandling(handler -> handler.authenticationEntryPoint(unauthorizedHandler));
+                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
+                .addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(handler -> handler.authenticationEntryPoint(unauthorizedHandler));
         return http.build();
     }
 
