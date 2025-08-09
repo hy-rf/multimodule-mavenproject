@@ -27,7 +27,7 @@ public class Post {
   @Column(unique = true, length = 50)
     private String title;
 
-    @Column(unique = true, length = 100)
+    @Column(unique = true, length = 1000)
     private String content;
 
     @Column(name = "created_at")
