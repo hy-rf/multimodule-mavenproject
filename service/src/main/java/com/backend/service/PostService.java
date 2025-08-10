@@ -13,9 +13,12 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 @Service
 public class PostService {
@@ -64,16 +67,17 @@ public class PostService {
       LocalDateTime createdAfter,
       LocalDateTime createdBefore,
       String sortBy,
-      String order) {
+      String order, int page,
+      int size) {
     Specification<Post> spec = Specification.where(PostSpecification.hasTitleOrContentLike(keyword))
         .and(PostSpecification.hasAuthorNameLike(authorName))
         .and(PostSpecification.createdAfter(createdAfter))
         .and(PostSpecification.createdBefore(createdBefore));
 
     Sort.Direction direction = order.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
-    Sort sort = Sort.by(direction, sortBy);
+    Pageable pageable = PageRequest.of(page - 1, size, Sort.by(direction, sortBy));
 
-    return postRepository.findAll(spec, sort);
+    return postRepository.findAll(spec, pageable).getContent();
   }
 
   public String createReply(Long postId, String content, Long userId, Long parentReplyId) {

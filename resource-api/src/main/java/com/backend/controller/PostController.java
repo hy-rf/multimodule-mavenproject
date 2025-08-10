@@ -70,17 +70,16 @@ public class PostController {
     public List<Post> getPosts(
             @RequestParam(required = false) String keyword,
             @RequestParam(required = false) String authorName,
-            @RequestParam(required = false)
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime createdAfter,
-            @RequestParam(required = false)
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime createdBefore,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime createdAfter,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime createdBefore,
             @RequestParam(defaultValue = "createdAt") String sortBy,
-            @RequestParam(defaultValue = "desc") String order
-    ) {
-        return postService.getPosts(keyword, authorName, createdAfter, createdBefore, sortBy, order);
+            @RequestParam(defaultValue = "desc") String order,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return postService.getPosts(keyword, authorName, createdAfter, createdBefore, sortBy, order, page, size);
     }
 
-    @PostMapping("reply") 
+    @PostMapping("reply")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<String> replyToPost(
             @RequestParam Long postId,
