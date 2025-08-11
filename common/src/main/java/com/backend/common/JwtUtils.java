@@ -75,6 +75,10 @@ public class JwtUtils {
                 }
             }
         }
+        String bearerToken = request.getHeader("X-Refresh-Token");
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        }
         return null;
     }
 }
