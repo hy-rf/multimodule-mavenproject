@@ -51,14 +51,14 @@ public class Post {
   private User author;
 
   @PrePersist
-public void onCreate() {
+  public void onCreate() {
     createdAt = OffsetDateTime.now();
     updatedAt = OffsetDateTime.now();
-}
+  }
 
-@PreUpdate
-public void onUpdate() {
+  @PreUpdate
+  public void onUpdate() {
     updatedAt = OffsetDateTime.now();
-}
+  }
 
 }
