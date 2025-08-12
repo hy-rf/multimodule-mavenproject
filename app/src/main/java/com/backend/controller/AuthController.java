@@ -70,9 +70,7 @@ public class AuthController {
         tokenCookie.setHttpOnly(true);
         tokenCookie.setPath("/");
         tokenCookie.setMaxAge(600);
-        // tokenCookie.setDomain("localhost");
         tokenCookie.setAttribute("SameSite", "None");
-        // Uncomment if using HTTPS
         tokenCookie.setSecure(true);
         response.addCookie(tokenCookie);
         String refreshToken = result.getRefresh();
@@ -80,9 +78,7 @@ public class AuthController {
         refreshTokenCookie.setHttpOnly(true);
         refreshTokenCookie.setPath("/");
         refreshTokenCookie.setMaxAge(3600);
-        // tokenCookie.setDomain("localhost");
         refreshTokenCookie.setAttribute("SameSite", "None");
-        // Uncomment if using HTTPS
         refreshTokenCookie.setSecure(true);
         response.addCookie(refreshTokenCookie);
 
