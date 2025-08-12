@@ -7,12 +7,12 @@
       "request": "launch",
       "cwd": "${workspaceFolder}",
       "console": "integratedTerminal",
-      "runtimeExecutable": "./mvnw",
       "args": [
         "-pl",
         "app",
         "-Dspring-boot.run.fork=false",
         "-Dspring-boot.run.jvmArguments=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8080",
+        "-Duser.timezone=UTC",
         "spring-boot:run"
       ],
       "preLaunchTask": "Maven Clean Compile",
