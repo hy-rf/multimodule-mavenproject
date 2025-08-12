@@ -16,12 +16,12 @@ services:
 
   frontend:
     build:
-      context: ./client
+      context: ./sbp-client-nuxt
     restart: always
 
   backend:
     build:
-      context: ./server
+      context: .
     depends_on:
       - postgres
     restart: always
