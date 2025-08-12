@@ -9,7 +9,10 @@
         "kind": "build",
         "isDefault": true
       },
-      "problemMatcher": ["$javac"],
+      "presentation": {
+        "reveal": "always",
+        "close": true
+      },
       "dependsOn": [
         "Run db"
       ]
