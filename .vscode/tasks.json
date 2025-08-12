@@ -9,7 +9,19 @@
         "kind": "build",
         "isDefault": true
       },
-      "problemMatcher": ["$javac"]
+      "problemMatcher": ["$javac"],
+      "dependsOn": [
+        "Run db"
+      ]
+    },
+    {
+      "label": "Run db",
+      "type": "shell",
+      "command": "~/mmdb_store_run.sh",
+      "group": {
+        "kind": "none",
+        "isDefault": true
+      }
     }
   ]
 }
