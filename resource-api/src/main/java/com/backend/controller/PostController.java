@@ -92,8 +92,8 @@ public class PostController {
         String content = replyRequest.getContent();
         Optional<Long> postId = replyRequest.getPostId();
         Optional<Long> parentReplyId = replyRequest.getParentReplyId();
-        postService.createReply(userId, content, postId, parentReplyId);
-        return ResponseEntity.ok("Reply successfully created");
+        String result = postService.createReply(userId, content, postId, parentReplyId);
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/post/{id}/replies")

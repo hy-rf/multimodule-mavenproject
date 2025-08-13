@@ -104,14 +104,14 @@ public class PostService {
         throw new IllegalArgumentException("Parent reply not found with id: " + parentReplyId);
       }
       Reply parentReply = parentReplyOpt.get();
-      Post post = parentReply.getPost();
       Reply reply = new Reply();
       reply.setContent(content);
       reply.setParentReply(parentReply);
       reply.setAuthor(userRepository.findById(userId)
           .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + userId)));
-      post.getReplies().add(reply);
-      postRepository.save(post);
+      parentReply.getReplies().add(reply);
+      replyRepository.save(reply);
+      replyRepository.save(parentReply);
       return "Reply created successfully to parent reply with id: " + parentReplyId;
     }
     return "No valid target for reply provided. Either postId or parentReplyId must be specified.";
