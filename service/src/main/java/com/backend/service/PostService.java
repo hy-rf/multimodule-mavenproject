@@ -116,4 +116,22 @@ public class PostService {
     }
     return "No valid target for reply provided. Either postId or parentReplyId must be specified.";
   }
+
+  public List<Reply> getRepliesByPostId(Long postId) {
+    Optional<Post> postOpt = postRepository.findById(postId);
+    if (!postOpt.isPresent()) {
+      throw new IllegalArgumentException("Post not found with id: " + postId);
+    }
+    Post post = postOpt.get();
+    return replyRepository.findByPostId(post.getId());
+  }
+
+  public List<Reply> getRepliesByParentReplyId(Long parentReplyId) {
+    Optional<Reply> parentReplyOpt = replyRepository.findById(parentReplyId);
+    if (!parentReplyOpt.isPresent()) {
+      throw new IllegalArgumentException("Parent reply not found with id: " + parentReplyId);
+    }
+    Reply parentReply = parentReplyOpt.get();
+    return replyRepository.findByParentReplyId(parentReply.getId());
+  }
 }

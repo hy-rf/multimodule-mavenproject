@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.model.Post;
+import com.backend.model.Reply;
 import com.backend.service.CustomUserDetails;
 import com.backend.service.PostService;
 
@@ -93,5 +94,25 @@ public class PostController {
         Optional<Long> parentReplyId = replyRequest.getParentReplyId();
         postService.createReply(userId, content, postId, parentReplyId);
         return ResponseEntity.ok("Reply successfully created");
+    }
+
+    @GetMapping("/post/{id}/replies")
+    public List<Reply> getRepliesByPostId(@PathVariable Long id, HttpServletResponse response) {
+        List<Reply> replies = postService.getRepliesByPostId(id);
+        if (replies == null || replies.isEmpty()) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return null; // or throw an exception
+        }
+        return replies;
+    }
+
+    @GetMapping("/reply/{id}/replies")
+    public List<Reply> getRepliesByParentReplyId(@PathVariable Long id, HttpServletResponse response) {
+        List<Reply> reply = postService.getRepliesByParentReplyId(id);
+        if (reply == null || reply.isEmpty()) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return null; // or throw an exception
+        }
+        return reply;
     }
 }

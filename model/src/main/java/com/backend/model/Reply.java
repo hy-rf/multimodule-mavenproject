@@ -45,6 +45,7 @@ public class Reply {
 
     @ManyToOne
     @JoinColumn(name = "reply_id")
+    @JsonBackReference
     private Reply parentReply;
 
     @OneToMany(mappedBy = "parentReply")
