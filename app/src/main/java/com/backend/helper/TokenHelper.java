@@ -2,7 +2,7 @@ package com.backend.helper;
 
 import jakarta.servlet.http.Cookie;
 
-public class setToken {
+public class TokenHelper {
   public static Cookie createCookie(String name, String value, int maxAge) {
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("Cookie name must not be null or empty.");
