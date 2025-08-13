@@ -1,10 +1,12 @@
 package com.backend.controller;
 
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -81,15 +83,15 @@ public class PostController {
 
     @PostMapping("reply")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<String> replyToPost(
-            @RequestParam Long postId,
-            @RequestParam(required = false) Long parentReplyId,
-            @RequestParam String content,
+    public ResponseEntity<String> replyToPost(@Valid @RequestBody CreateReplyRequest replyRequest,
             HttpServletResponse response) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         Long userId = userDetails.getId();
-        postService.createReply(postId, content, userId, parentReplyId);
+        String content = replyRequest.getContent();
+        Optional<Long> postId = replyRequest.getPostId();
+        Optional<Long> parentReplyId = replyRequest.getParentReplyId();
+        postService.createReply(userId, content, postId, parentReplyId);
         return ResponseEntity.ok("Reply successfully created");
     }
 }

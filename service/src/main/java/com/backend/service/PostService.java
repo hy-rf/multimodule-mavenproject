@@ -17,7 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Pageable;
 
 @Service
@@ -80,28 +80,40 @@ public class PostService {
     return postRepository.findAll(spec, pageable).getContent();
   }
 
-  public String createReply(Long postId, String content, Long userId, Long parentReplyId) {
-    Optional<Post> postOpt = postRepository.findById(postId);
-    if (!postOpt.isPresent()) {
-      throw new IllegalArgumentException("Post not found with id: " + postId);
+  @Transactional
+  public String createReply(Long userId, String content, Optional<Long> postId, Optional<Long> parentReplyId) {
+    if (postId.isPresent()) {
+      Optional<Post> postOpt = postRepository.findById(postId.get());
+      if (!postOpt.isPresent()) {
+        throw new IllegalArgumentException("Post not found with id: " + postId);
+      }
+      Post post = postOpt.get();
+      Reply reply = new Reply();
+      reply.setContent(content);
+      reply.setPost(post);
+      reply.setAuthor(userRepository.findById(userId)
+          .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + userId)));
+      post.getReplies().add(reply);
+      postRepository.save(post);
+      return "Reply created successfully on post with id: " + postId;
     }
 
-    Post post = postOpt.get();
-    Reply reply = new Reply();
-    reply.setContent(content);
-    reply.setPost(post);
-    reply.setAuthor(userRepository.findById(userId)
-        .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + userId)));
-    if (parentReplyId != null) {
-      reply.setParentReply(replyRepository.findById(parentReplyId)
-          .orElseThrow(() -> new IllegalArgumentException("Parent reply not found with id: " + parentReplyId)));
-    } else {
-      reply.setParentReply(null);
+    if (parentReplyId.isPresent()) {
+      Optional<Reply> parentReplyOpt = replyRepository.findById(parentReplyId);
+      if (!parentReplyOpt.isPresent()) {
+        throw new IllegalArgumentException("Parent reply not found with id: " + parentReplyId);
+      }
+      Reply parentReply = parentReplyOpt.get();
+      Post post = parentReply.getPost();
+      Reply reply = new Reply();
+      reply.setContent(content);
+      reply.setParentReply(parentReply);
+      reply.setAuthor(userRepository.findById(userId)
+          .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + userId)));
+      post.getReplies().add(reply);
+      postRepository.save(post);
+      return "Reply created successfully to parent reply with id: " + parentReplyId;
     }
-
-    post.getReplies().add(reply);
-    postRepository.save(post);
-
-    return "Reply created successfully";
+    return "No valid target for reply provided. Either postId or parentReplyId must be specified.";
   }
 }
