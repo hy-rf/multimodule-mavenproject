@@ -2,20 +2,12 @@ package com.backend.viewmodel;
 
 import java.util.List;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@AllArgsConstructor
+@Data
 public class CurrentUserResponse {
     private String username;
     private List<String> roles;
-
-    public CurrentUserResponse(String username, List<String> roles) {
-        this.username = username;
-        this.roles = roles;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public List<String> getRoles() {
-        return roles;
-    }
 }

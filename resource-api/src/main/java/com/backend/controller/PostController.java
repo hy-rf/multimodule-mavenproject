@@ -109,10 +109,6 @@ public class PostController {
     @GetMapping("/reply/{id}/replies")
     public List<Reply> getRepliesByParentReplyId(@PathVariable Long id, HttpServletResponse response) {
         List<Reply> reply = postService.getRepliesByParentReplyId(id);
-        if (reply == null || reply.isEmpty()) {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            return null; // or throw an exception
-        }
         return reply;
     }
 }

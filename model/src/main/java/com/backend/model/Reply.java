@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.Data;
@@ -48,6 +49,7 @@ public class Reply {
     @JsonBackReference
     private Reply parentReply;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "parentReply")
     @JsonManagedReference
     private List<Reply> replies;

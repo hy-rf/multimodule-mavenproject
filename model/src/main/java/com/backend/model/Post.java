@@ -1,9 +1,10 @@
 package com.backend.model;
 
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -43,6 +44,7 @@ public class Post {
   @Column(name = "updated_at")
   private OffsetDateTime updatedAt;
 
+  @JsonIgnore
   @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Reply> replies = new ArrayList<>();
 

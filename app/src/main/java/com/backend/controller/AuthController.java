@@ -1,9 +1,13 @@
 package com.backend.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +20,7 @@ import com.backend.dto.auth.RefreshStatus;
 import com.backend.dto.auth.RegisterResult;
 import com.backend.service.AuthService;
 import com.backend.service.LoginRateLimiterService;
+import com.backend.viewmodel.CurrentUserResponse;
 import com.backend.viewmodel.LoginRequest;
 import com.backend.viewmodel.RegisterRequest;
 
@@ -56,11 +61,12 @@ public class AuthController {
 
   @PostMapping("/login")
   @Operation(summary = "Login as user")
-  public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest, HttpSession session, HttpServletResponse response) {
+  public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest, HttpSession session,
+      HttpServletResponse response) {
     if (!loginRateLimiterService.isAllowed(loginRequest.getUsername())) {
       return ResponseEntity
-                .status(HttpStatus.TOO_MANY_REQUESTS)
-                .body("Too many login attempts. Please try again later.");
+          .status(HttpStatus.TOO_MANY_REQUESTS)
+          .body("Too many login attempts. Please try again later.");
     }
     LoginResult result = authService.loginUser(loginRequest.getUsername(), loginRequest.getPassword());
     return switch (result.getStatus()) {
@@ -134,6 +140,18 @@ public class AuthController {
     response.addCookie(refreshCookie);
 
     return "User logged out successfully";
+  }
+
+  @PreAuthorize("isAuthenticated()")
+  @GetMapping("/me")
+  public CurrentUserResponse getCurrentUser() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    String username = authentication.getName();
+    List<String> roles = authentication.getAuthorities()
+        .stream()
+        .map(auth -> auth.getAuthority())
+        .toList();
+    return new CurrentUserResponse(username, roles);
   }
 
 }

@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.model.User;
 import com.backend.service.UserService;
-import com.backend.viewmodel.CurrentUserResponse;
 import com.backend.viewmodel.LoginRequest;
 import com.backend.viewmodel.UpdateUserRequest;
 import com.backend.viewmodel.UpdateUserResult;
@@ -54,18 +51,6 @@ public class UserController {
         // Logic to retrieve all users
         List<User> user = userService.getAllUsers();
         return user;
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/me")
-    public CurrentUserResponse getCurrentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
-        List<String> roles = authentication.getAuthorities()
-                .stream()
-                .map(auth -> auth.getAuthority())
-                .toList();
-        return new CurrentUserResponse(username, roles);
     }
 
     @PreAuthorize("hasRole('admin')")

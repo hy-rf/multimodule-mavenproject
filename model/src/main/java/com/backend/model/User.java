@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -33,24 +34,31 @@ public class User {
     @Column(unique = true, length = 50)
     private String username;
 
+    @JsonIgnore
     @Column(unique = true, length = 100)
     private String email;
 
+    @JsonIgnore
     @Column(name = "password_hash", length = 255)
     private String passwordHash;
 
+    @JsonIgnore
     @Column(name = "full_name", length = 100)
     private String fullName;
 
+    @JsonIgnore
     @Column(name = "is_active")
     private Boolean isActive = true;
 
+    @JsonIgnore
     @Column(name = "email_verified")
     private Boolean emailVerified = false;
 
+    @JsonIgnore
     @Column(name = "two_factor_enabled")
     private Boolean twoFactorEnabled = false;
 
+    @JsonIgnore
     @Column(name = "two_factor_secret", length = 255)
     private String twoFactorSecret;
 
