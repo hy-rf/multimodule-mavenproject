@@ -46,7 +46,7 @@ public class Reply {
 
     @ManyToOne
     @JoinColumn(name = "reply_id")
-    @JsonBackReference
+    //@JsonBackReference
     private Reply parentReply;
 
     @JsonIgnore
